@@ -9,10 +9,24 @@ public class Deck : MonoBehaviour
 {
 
     private List<Card> cards;
-    [SerializeField] public List<GameObject> cardsPrefabs; //card prefabs, ordered
+    [SerializeField] private List<GameObject> cardsPrefabs; //card prefabs, ordered
+
+    [SerializeField] private float drawCardOffsetY = 1.35f;
+
+    [SerializeField] private LayerMask whatIsCard;
+    [SerializeField] private GameObject simpleCard; //prefab of an empty car
 
     private void Start(){
         InitializeDeck();
+    }
+
+    private void Update(){
+        if(!CheckCard()){
+            //Debug.Log("Card missing");
+            CreateEmptyCard();
+        }else{
+            //Debug.Log("Card on deck");
+        }
     }
 
     //Initialize an ordered deck with the cards, assigning values, suits and a prefab used for the materials.
@@ -28,19 +42,12 @@ public class Deck : MonoBehaviour
         //printDeck();
     }
 
-    void printDeck(){
-        for(int i=0; i<cards.Count; i++){
-            cards[i].Print();
-        }
-        Debug.Log(cards.Count);
-    }   
-
     //randomly shuffle all the cards inside the deck
     public void Shuffle(){
         /**
             TODO start an animation while shuffling the deck
         */
-        
+
         for(int i=0; i<cards.Count; i++){
             Card temp = cards[i];
             int randomIndex = Random.Range(i, cards.Count);
@@ -48,6 +55,26 @@ public class Deck : MonoBehaviour
             cards[randomIndex] = temp;
         }
         printDeck();
+    }
+
+    //shoot a raycast on the deck normal to check if there's a card, if there isn't then create one.
+    private bool CheckCard(){
+        Ray ray;
+        RaycastHit hit;
+        ray = new Ray(transform.position, Vector3.up);     //wallFront = Physics.Raycast(startPosition, orientation.forward, out frontWallHit, detectionLength, whatIsGround);
+
+        Debug.DrawRay(transform.position,  Vector3.up, Color.blue);
+
+        return Physics.Raycast(ray, out hit, 2f, whatIsCard);
+    }
+
+    private void CreateEmptyCard(){
+        if(cards.Count > 0){
+            //Debug.Log(transform.position.y + drawCardOffsetY);
+            Vector3 instatiatePosition = new Vector3(transform.position.x, transform.position.y + drawCardOffsetY, transform.position.z);
+            Quaternion simpleCardRotation = new Quaternion(0, 0, 180, 1);
+            Instantiate(simpleCard, instatiatePosition, simpleCardRotation, transform);
+        }
     }
 
     //Initialize the top card of the deck.
@@ -58,5 +85,13 @@ public class Deck : MonoBehaviour
         cardObject.SetMaterial(card.material);
 
     }
+
+    
+    void printDeck(){
+        for(int i=0; i<cards.Count; i++){
+            cards[i].Print();
+        }
+        Debug.Log(cards.Count);
+    }   
 
 }

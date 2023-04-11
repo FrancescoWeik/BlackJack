@@ -8,14 +8,19 @@ public class CardObject : MonoBehaviour
     private int value;
     private char suitChar;
     private MeshRenderer meshRenderer;
+
     private bool alreadyInitialized;
     private Deck deck;
+
+    //mouse coordinates
+    private Vector3 mOffset;
+    private float mZCoord;
 
     // Start is called before the first frame update
     void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        Debug.Log(meshRenderer);
+        //Debug.Log(meshRenderer);
         alreadyInitialized = false;
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
     }
@@ -34,7 +39,7 @@ public class CardObject : MonoBehaviour
 
     //assign the material to the card
     public void SetMaterial(Material material){
-        Debug.Log(material);
+        //Debug.Log(material);
         this.meshRenderer.material = material;
         alreadyInitialized = true;
     }
@@ -50,6 +55,9 @@ public class CardObject : MonoBehaviour
 
     //When a card is clicked check if it has been initialized, if not then initialize it
     public void OnMouseDown(){
+        mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
+        mOffset = transform.position - GetMouseWorldPos();
+
         if(checkAlreadyInitialized()){
             //do not reinitialize card, do nothing
             Debug.Log("Already Initialized");
@@ -60,8 +68,23 @@ public class CardObject : MonoBehaviour
         }
     }
 
+    public void OnMouseDrag(){
+        transform.position = GetMouseWorldPos() + mOffset;
+    }
+
     public void OnPointerUp(PointerEventData eventData){
         Debug.Log("mouseUp");
+    }
+
+    private Vector3 GetMouseWorldPos(){
+
+        //pixel coordinates
+        Vector3 mousePoint = Input.mousePosition;
+
+        //z coordinate of game object on screen
+        mousePoint.z = mZCoord;
+
+        return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 
     public void Throw(){

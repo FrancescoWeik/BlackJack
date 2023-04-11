@@ -1556,6 +1556,11 @@ MonoBehaviour:
   - {fileID: 472917173}
   - {fileID: 455342129}
   - {fileID: 827106672}
+  drawCardOffsetY: 0.081
+  whatIsCard:
+    serializedVersion: 2
+    m_Bits: 256
+  simpleCard: {fileID: 893939688725669755, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
 --- !u!1001 &557275884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2846,6 +2851,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleCard
       objectReference: {fileID: 0}
+    - target: {fileID: 893939688725669755, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2864,7 +2873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.083333254
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2872,7 +2881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.09999672
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2909,23 +2918,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4196423231127360872, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
   m_PrefabInstance: {fileID: 1054027696}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1054027698 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 893939688725669755, guid: 0b703d72082d51f4eac1596b72a30cc5, type: 3}
-  m_PrefabInstance: {fileID: 1054027696}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1054027699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1054027698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c4a8910f2f53e44aae2fd6d982ecf07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1084359040
 PrefabInstance:
   m_ObjectHideFlags: 0
