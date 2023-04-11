@@ -5,17 +5,37 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    //public Button shuffleButton;
+    public static GameManager Instance;
+
+    public bool isPlayerTurn;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Deck deck = new Deck();
+        if(Instance!=null){
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Instance = this;
+        GameObject.DontDestroyOnLoad(this.gameObject);
+        
+        isPlayerTurn = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(isPlayerTurn){
+            bool finishedDeciding = PlayersManager.Instance.CheckAllPlayerFinished();
+            if(finishedDeciding){
+                StartDealerTurn();
+            }
+        }
+    }
+
+    void StartDealerTurn(){
+        isPlayerTurn = false;
+        PlayersManager.Instance.ResetPlayersDecisions();
     }
 }

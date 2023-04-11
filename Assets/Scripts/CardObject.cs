@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class CardObject : MonoBehaviour
 {
+    private Rigidbody rb;
+
     private int value;
     private char suitChar;
     private MeshRenderer meshRenderer;
@@ -16,9 +18,16 @@ public class CardObject : MonoBehaviour
     private Vector3 mOffset;
     private float mZCoord;
 
+    Vector3 startPosition; //used to know where to throw the card
+    Vector3 lastPosition; //last position before releasing the card
+    public float forceMultiplier = 10f;
+    public float turnSpeed = 10f;
+    public float yOffset = 0.2f;
+
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         //Debug.Log(meshRenderer);
         alreadyInitialized = false;
@@ -58,6 +67,11 @@ public class CardObject : MonoBehaviour
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
         mOffset = transform.position - GetMouseWorldPos();
 
+        startPosition = transform.position;
+
+        //freeze card rotation
+        rb.freezeRotation = true;
+
         if(checkAlreadyInitialized()){
             //do not reinitialize card, do nothing
             Debug.Log("Already Initialized");
@@ -70,6 +84,27 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseDrag(){
         transform.position = GetMouseWorldPos() + mOffset;
+
+        //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
+    }
+
+    public void OnMouseUp(){
+        rb.freezeRotation = false;
+
+        //Check if on a payer, if it is then drop it on player,
+
+        //if it isn't then launch the card toward direction
+        lastPosition = transform.position;
+        Vector3 directionXY = (lastPosition - startPosition).normalized;
+        Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
+        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
+        Debug.Log(directionXZ);
+
+        //apply force in the direction
+        rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
+        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+
+        Debug.Log("mouse up");
     }
 
     public void OnPointerUp(PointerEventData eventData){
