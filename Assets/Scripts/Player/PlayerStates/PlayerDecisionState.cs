@@ -47,7 +47,11 @@ public class PlayerDecisionState : PlayerState
             if(player.GetCardSum() > player.maxBlackJack){
                 stateMachine.ChangeState(player.loseState);
             }else{  
-                stateMachine.ChangeState(player.rejectCardState);
+                if(player.numberOfCards>=2){
+                    stateMachine.ChangeState(player.rejectCardState);
+                }else{
+                    stateMachine.ChangeState(player.waitingForCardState);
+                }
             }
         }else{
             //if want a card then change to wait card state

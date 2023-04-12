@@ -12,6 +12,9 @@ public class PlayerLostState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        player.lost = true;
+        player.FinishTurn();
     }
 
     public override void Exit()

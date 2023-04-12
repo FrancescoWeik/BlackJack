@@ -22,13 +22,14 @@ public class DealerHand : MonoBehaviour
             CardObject cardObject = cardGO.GetComponent<CardObject>();
 
             cardObjectList.Add(cardObject);
-            UpdateCardSum(cardObject.GetValue());
 
             cardObject.SetVelocity(Vector3.zero);
 
             //Send card on the table in front of dealer faced up
             cardGO.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
             cardGO.transform.rotation = cardPosition.rotation;
+
+            UpdateCardSum(cardObject.GetValue());
 
             //deActivate the card so that the player can't pick it up again
             cardObject.RemoveInteraction();
@@ -69,5 +70,10 @@ public class DealerHand : MonoBehaviour
     public void UpdateCardSum(int value){
         cardSum = cardSum + value;
         cardSumText.text = cardSum.ToString();
+
+        //Check if exceeding max blackjack number
+        if(cardSum>21){
+            GameManager.Instance.EndGame();
+        }
     }
 }
