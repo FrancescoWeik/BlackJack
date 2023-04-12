@@ -13,7 +13,7 @@ public class PlayersManager : MonoBehaviour
     [SerializeField] private List<Player> players;
     [SerializeField] private List<Vector3> possiblePlayerPositions;
 
-    int numberOfPlayersWaitingTurn;
+    public int numberOfPlayersWaitingTurn;
 
     void Start()
     {
@@ -54,8 +54,13 @@ public class PlayersManager : MonoBehaviour
         numberOfPlayersWaitingTurn ++;
         if(numberOfPlayersWaitingTurn >= players.Count){
             //GameManager.Instance.StartDealerTurn();
+            Debug.Log("Player Turn Again!");
             ResetPlayersDecisions();
+
+            //should check if everyone is saying no or has lost before doing so
             GameManager.Instance.StartPlayerTurn();
+
+            numberOfPlayersWaitingTurn = 0;
         }
     }
 }

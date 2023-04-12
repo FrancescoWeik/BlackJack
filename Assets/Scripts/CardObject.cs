@@ -40,6 +40,10 @@ public class CardObject : MonoBehaviour
         
     }
 
+    public int GetValue(){
+        return value;
+    }
+
     //set the value and suit of the card
     public void SetValueAndSuit(int value, char suitChar){
         this.value = value;
@@ -64,21 +68,21 @@ public class CardObject : MonoBehaviour
 
     //When a card is clicked check if it has been initialized, if not then initialize it
     public void OnMouseDown(){
+        //freeze card rotation
+        rb.freezeRotation = true;
+        
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
         mOffset = transform.position - GetMouseWorldPos();
 
         startPosition = transform.position;
 
-        //freeze card rotation
-        rb.freezeRotation = true;
-
         if(checkAlreadyInitialized()){
             //do not reinitialize card, do nothing
-            Debug.Log("Already Initialized");
+            //Debug.Log("Already Initialized");
         }else{
             alreadyInitialized = true;
             deck.InitializeCard(this);
-            Debug.Log("initialized Card");
+            //Debug.Log("initialized Card");
         }
     }
 
@@ -98,17 +102,13 @@ public class CardObject : MonoBehaviour
         Vector3 directionXY = (lastPosition - startPosition).normalized;
         Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
         Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-        Debug.Log(directionXZ);
+        //Debug.Log(directionXZ);
 
         //apply force in the direction
         rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
         rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
 
-        Debug.Log("mouse up");
-    }
-
-    public void OnPointerUp(PointerEventData eventData){
-        Debug.Log("mouseUp");
+        //Debug.Log("mouse up");
     }
 
     private Vector3 GetMouseWorldPos(){

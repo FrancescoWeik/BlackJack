@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public void StartDealerTurn(){
         isPlayerTurn = false;
+        Debug.Log("Dealer Turn");
     }
 
     public void StartPlayerTurn(){

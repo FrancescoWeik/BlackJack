@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsCard;
     private int cardLayerNumber;
 
-    List<CardObject> cardObjectList; //list of the cards that the player has while playing, maybe I can take a reference only to the value
+    public List<CardObject> cardObjectList; //list of the cards that the player has while playing, maybe I can take a reference only to the value
 
     public int stopAskingAtPoints = 20; //above 20 points the player won't ask for more cards
     public int askingPercentage = 7; //percentage out of ten, so with 7 is 70%
@@ -44,10 +44,10 @@ public class Player : MonoBehaviour
     {
         if(GameManager.Instance.isPlayerTurn){
             int number = Random.Range(0,10);
-            if(number > askingPercentage){
+            if(number > askingPercentage || ExceedMaxAskingPoints()){
                 //Do Not Ask For Card
                 askingForCard = false;
-                ChangeAnim("idle"); //maybe I can use an animation when they do not want a card...
+                ChangeAnim("notAsking");
                 FinishTurn();
             }else{
                 //Ask For A Card if player hasn't already received one, else wait for end of turn
@@ -101,8 +101,23 @@ public class Player : MonoBehaviour
     public void FinishTurn(){
         //add +1 on playerFinishTurn to playersmanager
         if(!waitingForNextTurn){
-            PlayersManager.Instance.AddWaitingForTurn();
             waitingForNextTurn = true;
+            PlayersManager.Instance.AddWaitingForTurn();
+        }
+    }
+
+    public bool ExceedMaxAskingPoints(){
+        int cardSum = 0;
+        for(int i=0; i<cardObjectList.Count; i++){
+            cardSum = cardSum + cardObjectList[i].GetValue();
+        }
+
+        Debug.Log("Card sum is " + cardSum);
+        
+        if(cardSum >= stopAskingAtPoints){
+            return true;
+        }else{
+            return false;
         }
     }
 }
