@@ -24,6 +24,8 @@ public class CardObject : MonoBehaviour
     public float turnSpeed = 10f;
     public float yOffset = 0.2f;
 
+    private bool isInteractable; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,7 @@ public class CardObject : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         //Debug.Log(meshRenderer);
         alreadyInitialized = false;
+        isInteractable = true;
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
     }
 
@@ -68,47 +71,53 @@ public class CardObject : MonoBehaviour
 
     //When a card is clicked check if it has been initialized, if not then initialize it
     public void OnMouseDown(){
-        //freeze card rotation
-        rb.freezeRotation = true;
-        
-        mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
-        mOffset = transform.position - GetMouseWorldPos();
+        if(isInteractable){
+            //freeze card rotation
+            rb.freezeRotation = true;
+            
+            mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
+            mOffset = transform.position - GetMouseWorldPos();
 
-        startPosition = transform.position;
+            startPosition = transform.position;
 
-        if(checkAlreadyInitialized()){
-            //do not reinitialize card, do nothing
-            //Debug.Log("Already Initialized");
-        }else{
-            alreadyInitialized = true;
-            deck.InitializeCard(this);
-            //Debug.Log("initialized Card");
+            if(checkAlreadyInitialized()){
+                //do not reinitialize card, do nothing
+                //Debug.Log("Already Initialized");
+            }else{
+                alreadyInitialized = true;
+                deck.InitializeCard(this);
+                //Debug.Log("initialized Card");
+            }
         }
     }
 
     public void OnMouseDrag(){
-        transform.position = GetMouseWorldPos() + mOffset;
+        if(isInteractable){
+            transform.position = GetMouseWorldPos() + mOffset;
+        }
 
         //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
     }
 
     public void OnMouseUp(){
-        rb.freezeRotation = false;
+        if(isInteractable){
+            rb.freezeRotation = false;
 
-        //Check if on a payer, if it is then drop it on player,
+            //Check if on a payer, if it is then drop it on player,
 
-        //if it isn't then launch the card toward direction
-        lastPosition = transform.position;
-        Vector3 directionXY = (lastPosition - startPosition).normalized;
-        Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-        //Debug.Log(directionXZ);
+            //if it isn't then launch the card toward direction
+            lastPosition = transform.position;
+            Vector3 directionXY = (lastPosition - startPosition).normalized;
+            Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
+            Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
+            //Debug.Log(directionXZ);
 
-        //apply force in the direction
-        rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
-        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+            //apply force in the direction
+            rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
+            rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
 
-        //Debug.Log("mouse up");
+            //Debug.Log("mouse up");
+        }
     }
 
     private Vector3 GetMouseWorldPos(){
@@ -124,6 +133,10 @@ public class CardObject : MonoBehaviour
 
     public void SetVelocity(Vector3 velocity){
         rb.velocity = velocity;
+    }
+
+    public void RemoveInteraction(){
+        isInteractable = false;
     }
 
 

@@ -2712,3 +2712,5 @@ MonoBehaviour:
   receivedCard: 0
   waitingForNextTurn: 0
   cardPosition: {fileID: 8607267967119703968}
+  cardXOffset: 0.3
+  cardSumText: {fileID: 8607267966533500234}

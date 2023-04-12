@@ -84,8 +84,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         stateMachine.currentState.LogicUpdate();
-
-        //Debug.Log(stateMachine.currentState);
     }
 
     //reset all the boolean to false since it's the dealer turn
@@ -134,14 +132,20 @@ public class Player : MonoBehaviour
 
                 UpdateCardSum(cardObject.GetValue());
 
+                //remove the velocity from the rigidbody
+                cardObject.SetVelocity(Vector3.zero);
+
+                //should move the card in the direction of its local axis
                 //Send card on the table in front of player faced up, (could move it slowly there with a transform.translate and removing rb forces)
-                cardObject.SetVelocity(Vector3.zero); //remove the velocity from the rigidbody
-                collision.gameObject.transform.position = cardPosition.position;
+                collision.gameObject.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
                 collision.gameObject.transform.rotation = cardPosition.rotation;
 
-                // ChangeAnim("idle");
+                //deActivate the card so that the player can't pick it up again
+                cardObject.RemoveInteraction();
+
                 receivedCard = true;
                 askingForCard = false;
+                currentXOffset = currentXOffset + cardXOffset;
                 FinishTurn();
             }
         }
