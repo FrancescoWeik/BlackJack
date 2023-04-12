@@ -9,10 +9,12 @@ public class PlayersManager : MonoBehaviour
     public int numberOfPlayers;
     public int maxNumberOfPlayers;
 
-    private List<Player> players;
+    //public GameObject playerPrefab;
+    [SerializeField] private List<Player> players;
     [SerializeField] private List<Vector3> possiblePlayerPositions;
 
-    // Start is called before the first frame update
+    int numberOfPlayersWaitingTurn;
+
     void Start()
     {
         if(Instance!=null){
@@ -20,15 +22,17 @@ public class PlayersManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        numberOfPlayersWaitingTurn = 0;
+        //TODO instantiate all players
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
-    //Checks if all the players have finished deciding what to do, since it takes so little I'll add a decision timer
+    //Checks if all the players have finished deciding what to do, since it takes so little I can add a decision timer to make the dealer wait
     public bool CheckAllPlayerFinished(){
         for(int i=0; i<players.Count; i++){
             if(!players[i].decidedWhatToDo){
@@ -38,9 +42,20 @@ public class PlayersManager : MonoBehaviour
         return true;
     }
 
+    //Reset all players decision when the player turn starts.
     public void ResetPlayersDecisions(){
         for(int i=0; i<players.Count; i++){
             players[i].ResetPlayerDecision();
+        }
+    }
+
+    //add +1 to the number of player that finished the turn, if all did then it's the dealer turn!
+    public void AddWaitingForTurn(){
+        numberOfPlayersWaitingTurn ++;
+        if(numberOfPlayersWaitingTurn >= players.Count){
+            //GameManager.Instance.StartDealerTurn();
+            ResetPlayersDecisions();
+            GameManager.Instance.StartPlayerTurn();
         }
     }
 }
