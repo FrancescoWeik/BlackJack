@@ -31,11 +31,17 @@ public class GameManager : MonoBehaviour
             if(finishedDeciding){
                 StartDealerTurn();
             }
+        }else{
+            //dealer turn
         }
     }
 
-    void StartDealerTurn(){
+    public void StartDealerTurn(){
         isPlayerTurn = false;
-        PlayersManager.Instance.ResetPlayersDecisions();
+        Debug.Log("Dealer Turn");
+    }
+
+    public void StartPlayerTurn(){
+        isPlayerTurn = true;
     }
 }
