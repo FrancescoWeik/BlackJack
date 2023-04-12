@@ -54,9 +54,11 @@ public class PlayersManager : MonoBehaviour
     public void AddWaitingForTurn(){
         numberOfPlayersWaitingTurn ++;
         if(numberOfPlayersWaitingTurn >= players.Count){
-            //should check if everyone is saying no or has lost before doing so
+            //All the players received the card if the wanted one, now it's the dealer turn to draw a card.
+            GameManager.Instance.StartDealerTurn();
 
-            //
+            /*
+            //should check if everyone is saying no or has lost before doing so
 
             //reset the player decisions at the start of their turn, resetting the animations too
             ResetPlayersDecisions();
@@ -64,7 +66,21 @@ public class PlayersManager : MonoBehaviour
             GameManager.Instance.StartPlayerTurn();
 
             numberOfPlayersWaitingTurn = 0;
+            */
         }
+    }
+
+    public void StartPlayerTurn(){
+        
+        //should check if everyone is saying no or has lost before doing so
+
+        //reset the player decisions at the start of their turn, resetting the animations too
+        ResetPlayersDecisions();
+
+        GameManager.Instance.StartPlayerTurn();
+
+        numberOfPlayersWaitingTurn = 0;
+        
     }
 
     /*public void SetPlayerToDecideState(){

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public DealerHand dealer;
 
     public bool isPlayerTurn;
 
@@ -27,10 +28,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(isPlayerTurn){
-            bool finishedDeciding = PlayersManager.Instance.CheckAllPlayerFinished();
-            if(finishedDeciding){
-                StartDealerTurn();
-            }
+            //bool finishedDeciding = PlayersManager.Instance.CheckAllPlayerFinished();
+            //if(finishedDeciding){
+                //StartDealerTurn();
+            //}
         }else{
             //dealer turn
         }
@@ -39,6 +40,13 @@ public class GameManager : MonoBehaviour
     public void StartDealerTurn(){
         isPlayerTurn = false;
         Debug.Log("Dealer Turn");
+
+        //if dealer cannot draw then go back to player turn.
+        if(!dealer.CheckCanDraw()){
+            //Check if all player don-t want cards, if all of them don't want cards then end game and checks who win
+
+            PlayersManager.Instance.StartPlayerTurn();
+        }
     }
 
     public void StartPlayerTurn(){

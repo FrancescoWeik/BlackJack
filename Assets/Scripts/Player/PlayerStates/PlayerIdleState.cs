@@ -22,7 +22,6 @@ public class PlayerIdleState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        //just play the idle animation.
+        //just play the idle animation
     }
 }

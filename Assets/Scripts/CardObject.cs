@@ -112,25 +112,25 @@ public class CardObject : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsPlayer)){
-                //assign card to gameObject if asking for a card
-                hit.collider.gameObject.GetComponent<Player>().AssignCard(gameObject);
+                //assign card to player if asking for a card
+                if(hit.collider.gameObject.GetComponent<Player>().CheckAssignCard()){
+                    hit.collider.gameObject.GetComponent<Player>().AssignCard(gameObject);
+                }else{
+                    Throw();
+                }
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsDealer)){
-                //hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
+                //assign card to dealer if possible
+                Debug.Log(hit.collider.gameObject);
+                if(hit.collider.gameObject.GetComponent<DealerHand>().CheckAssignCard()){
+                    hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
+                }else{
+                    Throw();
+                }
             }
             else{
                 //if card is not on a player or on the dealer then throw it
-                lastPosition = transform.position;
-                Vector3 directionXY = (lastPosition - startPosition).normalized;
-                Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-                Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-                //Debug.Log(directionXZ);
-
-                //apply force in the direction
-                rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
-                rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
-
-                //Debug.Log("mouse up");
+                Throw();
             }
         }
     }
@@ -144,6 +144,17 @@ public class CardObject : MonoBehaviour
         mousePoint.z = mZCoord;
 
         return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
+    private void Throw(){
+        lastPosition = transform.position;
+        Vector3 directionXY = (lastPosition - startPosition).normalized;
+        Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
+        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
+
+        //apply force in the direction
+        rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
+        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
     }
 
     public void SetVelocity(Vector3 velocity){

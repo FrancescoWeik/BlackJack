@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
     private int cardLayerNumber;
 
     public List<CardObject> cardObjectList; //list of the cards that the player has while playing, maybe I can take a reference only to the value
+    public int numberOfCards; //keep the numbher of the card drawn by the player
     private int cardSum;
 
     public int stopAskingAtPoints = 20; //above 20 points the player won't ask for more cards
     public int askingPercentage = 7; //percentage out of ten, so with 7 is 70%
+    public int maxBlackJack = 21;
 
     public bool askingForCard;
     public bool decidedWhatToDo;
@@ -94,7 +96,7 @@ public class Player : MonoBehaviour
         waitingForNextTurn = false;
 
         //if the player has decided not to take cards then he cannot change his mind at the next draw
-        if(stateMachine.currentState != rejectCardState){
+        if(stateMachine.currentState != rejectCardState && stateMachine.currentState != loseState){
             stateMachine.ChangeState(decisionState);
         }
     }
@@ -123,12 +125,13 @@ public class Player : MonoBehaviour
     public void OnCollisionEnter(Collision collision){
         if(collision.gameObject.layer == cardLayerNumber){
             Debug.Log("Card hit");
-            if(!receivedCard && askingForCard){
+            if(CheckAssignCard()){
                 AddCardToPlayerHand(collision.gameObject);
             }
         }
     }
 
+    //Add the card to the player and remove the forces to that card in order to position it on the table
     public void AddCardToPlayerHand(GameObject CardGameObject){
         CardObject cardObject = CardGameObject.GetComponent<CardObject>();
 
@@ -162,7 +165,7 @@ public class Player : MonoBehaviour
 
     //function called by the card if dragged onto the player
     public void AssignCard(GameObject cardGO){
-        if(!receivedCard && askingForCard){
+        if(CheckAssignCard()){
             AddCardToPlayerHand(cardGO);
             //cardObject.RemoveInteraction();
         }
@@ -170,8 +173,18 @@ public class Player : MonoBehaviour
 
     #region Checks
 
+    //check if the player already received a card in this turn
     public bool CheckReceivedCard(){
         if(receivedCard){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //function used to check whether or not you can assign card to the player
+    public bool CheckAssignCard(){
+        if(!receivedCard && askingForCard){
             return true;
         }else{
             return false;

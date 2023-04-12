@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerDecisionState : PlayerState
 {
     int number;
-    int maxBlackJack = 21;
-
     public PlayerDecisionState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
 
@@ -30,13 +28,23 @@ public class PlayerDecisionState : PlayerState
     {
         base.LogicUpdate();
 
+        /*if(player.numberOfCards<2){
+            if(player.GetCardSum() > player.maxBlackJack){
+                stateMachine.ChangeState(player.loseState);
+            }else{
+                //must ask for card
+                player.decidedWhatToDo = true;
+                stateMachine.ChangeState(player.waitingForCardState);
+            }
+        }*/
+
         if(number > player.askingPercentage || player.ExceedMaxAskingPoints()){
             //Do Not Ask For Card
             player.askingForCard = false;
             player.decidedWhatToDo = true;
 
             //check if sum of cards is bigger than 21, if it is then lost
-            if(player.GetCardSum() > maxBlackJack){
+            if(player.GetCardSum() > player.maxBlackJack){
                 stateMachine.ChangeState(player.loseState);
             }else{  
                 stateMachine.ChangeState(player.rejectCardState);

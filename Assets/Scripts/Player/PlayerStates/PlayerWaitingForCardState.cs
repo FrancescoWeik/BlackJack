@@ -29,7 +29,13 @@ public class PlayerWaitingForCardState : PlayerState
         //Debug.Log("waiting for a card");
 
         if(player.CheckReceivedCard()){
-            stateMachine.ChangeState(player.idleState);
+            
+            //check if sum exceeds, it it does then change to lose
+            if(player.GetCardSum() > player.maxBlackJack){
+                stateMachine.ChangeState(player.loseState);
+            }else{
+                stateMachine.ChangeState(player.idleState);
+            }
         }else{
             //wait for card...
         }
