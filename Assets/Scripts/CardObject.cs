@@ -122,8 +122,8 @@ public class CardObject : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 
-    public void Throw(){
-        //if the card gets thrown then I need to create a new card at the top of the deck
+    public void SetVelocity(Vector3 velocity){
+        rb.velocity = velocity;
     }
 
 
