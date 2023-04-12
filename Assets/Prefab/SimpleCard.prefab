@@ -128,3 +128,9 @@ MonoBehaviour:
   forceMultiplier: 8.38
   turnSpeed: 8
   yOffset: 0.2
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsDealer:
+    serializedVersion: 2
+    m_Bits: 512

@@ -22,6 +22,7 @@ public class PlayersManager : MonoBehaviour
             return;
         }
         Instance = this;
+        GameObject.DontDestroyOnLoad(this.gameObject);
 
         numberOfPlayersWaitingTurn = 0;
         //TODO instantiate all players

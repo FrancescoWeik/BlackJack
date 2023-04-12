@@ -26,6 +26,9 @@ public class CardObject : MonoBehaviour
 
     private bool isInteractable; 
 
+    public LayerMask whatIsPlayer;
+    public LayerMask whatIsDealer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -103,20 +106,32 @@ public class CardObject : MonoBehaviour
         if(isInteractable){
             rb.freezeRotation = false;
 
-            //Check if on a payer, if it is then drop it on player,
+            //Check if on a player or dealer, if it is then drop it on player,
+            Ray ray;
+            RaycastHit hit;
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //if it isn't then launch the card toward direction
-            lastPosition = transform.position;
-            Vector3 directionXY = (lastPosition - startPosition).normalized;
-            Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-            Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-            //Debug.Log(directionXZ);
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsPlayer)){
+                //assign card to gameObject if asking for a card
+                hit.collider.gameObject.GetComponent<Player>().AssignCard(gameObject);
+            }
+            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsDealer)){
+                //hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
+            }
+            else{
+                //if card is not on a player or on the dealer then throw it
+                lastPosition = transform.position;
+                Vector3 directionXY = (lastPosition - startPosition).normalized;
+                Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
+                Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
+                //Debug.Log(directionXZ);
 
-            //apply force in the direction
-            rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
-            rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+                //apply force in the direction
+                rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
+                rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
 
-            //Debug.Log("mouse up");
+                //Debug.Log("mouse up");
+            }
         }
     }
 
