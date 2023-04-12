@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         GameObject.DontDestroyOnLoad(this.gameObject);
         
-        isPlayerTurn = false;
+        isPlayerTurn = true;
     }
 
     // Update is called once per frame

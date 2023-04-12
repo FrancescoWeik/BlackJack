@@ -53,14 +53,22 @@ public class PlayersManager : MonoBehaviour
     public void AddWaitingForTurn(){
         numberOfPlayersWaitingTurn ++;
         if(numberOfPlayersWaitingTurn >= players.Count){
-            //GameManager.Instance.StartDealerTurn();
-            Debug.Log("Player Turn Again!");
+            //should check if everyone is saying no or has lost before doing so
+
+            //
+
+            //reset the player decisions at the start of their turn, resetting the animations too
             ResetPlayersDecisions();
 
-            //should check if everyone is saying no or has lost before doing so
             GameManager.Instance.StartPlayerTurn();
 
             numberOfPlayersWaitingTurn = 0;
         }
     }
+
+    /*public void SetPlayerToDecideState(){
+        for(int i=0; i<players.Count; i++){
+            players[i].ResetPlayerDecision();
+        }
+    }*/
 }

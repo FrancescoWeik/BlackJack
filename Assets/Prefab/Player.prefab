@@ -2264,7 +2264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8607267965830608425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2525,7 +2525,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8607267967119703969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8443, z: 0.518}
+  m_LocalPosition: {x: -0, y: 0.8443, z: 0.655}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8140698199589887700}
@@ -2606,6 +2606,7 @@ GameObject:
   - component: {fileID: 8607267965575258935}
   - component: {fileID: 8607267965575258928}
   - component: {fileID: 8607267965575258929}
+  - component: {fileID: 1826396204}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -2620,7 +2621,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8913258411496817774}
-  m_LocalRotation: {x: -0, y: 0.8829087, z: -0, w: 0.46954474}
+  m_LocalRotation: {x: 0, y: 0.8829107, z: 0, w: 0.469541}
   m_LocalPosition: {x: -4.02, y: 0.15958309, z: 4.09}
   m_LocalScale: {x: 3.5102, y: 3.5102, z: 3.5102}
   m_Children:
@@ -2671,7 +2672,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8913258411496817774}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00f95b854b3b89441989f2c31cf91be2, type: 3}
   m_Name: 
@@ -2679,10 +2680,37 @@ MonoBehaviour:
   whatIsCard:
     serializedVersion: 2
     m_Bits: 256
+  cardObjectList: []
+  stopAskingAtPoints: 10
+  askingPercentage: 9
+  askingForCard: 0
+  decidedWhatToDo: 0
+  receivedCard: 0
+  waitingForNextTurn: 0
+  cardPosition: {fileID: 8607267967119703968}
+--- !u!114 &1826396204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913258411496817774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f4e2716cadaba49902e921efe0a355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 8607267965575258928}
+  whatIsCard:
+    serializedVersion: 2
+    m_Bits: 256
+  cardObjectList: []
   stopAskingAtPoints: 20
   askingPercentage: 7
   askingForCard: 0
   decidedWhatToDo: 0
   receivedCard: 0
-  finishedTurn: 0
+  waitingForNextTurn: 0
   cardPosition: {fileID: 8607267967119703968}
+  cardXOffset: 0.3
+  cardSumText: {fileID: 8607267966533500234}
