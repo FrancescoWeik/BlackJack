@@ -9,9 +9,9 @@ public class PlayersManager : MonoBehaviour
     public int numberOfPlayers;
     public int maxNumberOfPlayers;
 
-    //public GameObject playerPrefab;
+    public GameObject playerPrefab;
     [SerializeField] private List<Player> players;
-    [SerializeField] private List<Vector3> possiblePlayerPositions;
+    [SerializeField] private List<Transform> possiblePlayerPositions;
 
     public int numberOfPlayersWaitingTurn;
 
@@ -22,10 +22,26 @@ public class PlayersManager : MonoBehaviour
             return;
         }
         Instance = this;
-        GameObject.DontDestroyOnLoad(this.gameObject);
+        //GameObject.DontDestroyOnLoad(this.gameObject);
 
         numberOfPlayersWaitingTurn = 0;
-        //TODO instantiate all players
+    }
+
+    //instantiate all players and add them into the list of playing players
+    public void InstantiateAllPlayers(int numberOfPlayers){
+        players = new List<Player>();
+        this.numberOfPlayers = numberOfPlayers;
+        for(int i = 0; i < numberOfPlayers; i++){
+            GameObject singlePlayer = Instantiate(playerPrefab, possiblePlayerPositions[i].position, possiblePlayerPositions[i].rotation);
+
+            /**
+                TODO
+                change the percentage of wanting card for each player
+                maybe give each player a name so that it's easier to know who wins
+            **/
+
+            players.Add(singlePlayer.GetComponent<Player>());
+        }
     }
 
     //Checks if all the players have finished deciding what to do, since it takes so little I can add a decision timer to make the dealer wait

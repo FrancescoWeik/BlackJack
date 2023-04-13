@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
         endRoundCanvas.SetActive(true);
     }
 
-
+    //immediately start a new round when one finishes.
     public void StartNextRound(){
         Debug.Log("Starting next round");
 
@@ -113,5 +113,10 @@ public class GameManager : MonoBehaviour
         //this part will later be called by the deck animation
         dealer.ResetToStart();
         PlayersManager.Instance.ResetPlayersToStart();
+    }
+
+    //Function called using the ui, it starts the game
+    public void StartGame(int numberOfPlayers){
+        PlayersManager.Instance.InstantiateAllPlayers(numberOfPlayers);
     }
 }
