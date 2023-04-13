@@ -106,6 +106,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    //reset the player for the start of a new game
+    public void ResetPlayerToStart(){
+        decidedWhatToDo = false;
+        askingForCard = false;
+        receivedCard = false;
+        waitingForNextTurn = false;
+        lost = false;
+        rejectCards = false;
+        numberOfCards = 0;
+        cardSum = 0;
+        cardObjectList = new List<CardObject>();
+        currentXOffset = 0;
+        cardSumText.text = cardSum.ToString();
+        stateMachine.ChangeState(waitingForCardState);
+    }
+
     public void FinishTurn(){
         //add +1 on playerFinishTurn to playersmanager
         if(!waitingForNextTurn){
@@ -182,6 +198,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    #region ChangeState region
     //change the player to win state, it's always called from the player manager
     public void ChangeToWinState(){
         stateMachine.ChangeState(winState);
@@ -191,6 +208,8 @@ public class Player : MonoBehaviour
     public void ChangeToLostState(){
         stateMachine.ChangeState(loseState);
     }
+
+    #endregion
 
     #region Checks
 

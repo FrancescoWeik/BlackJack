@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public GameObject endRoundCanvas;
     public Text winnerText;
 
+    public Deck deck; //need the deck to be able to handle the deck reset at end of game
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +52,6 @@ public class GameManager : MonoBehaviour
             /*
                 not sure about this one because I can't find rules regarding this special case.
                 if all players exceed 21 does the dealer still have to draw?
-                TODO ask to Lucas
             */
             EndGame();
         }else{
@@ -93,7 +94,7 @@ public class GameManager : MonoBehaviour
     public void PlayersWon(List<Player> playerList){
         string textWinner = "Winners:\n";  
         for(int i = 0; i < playerList.Count; i++){
-            textWinner = textWinner + "- Player " + i.ToString() + "\n";
+            textWinner = textWinner + "- " + playerList[i].ToString() + "\n";
         }
         winnerText.text =  textWinner;
         endRoundCanvas.SetActive(true);
@@ -103,7 +104,14 @@ public class GameManager : MonoBehaviour
     public void StartNextRound(){
         Debug.Log("Starting next round");
 
-        //Get All cards on the table and put them at the bottom
+        //TODO Play deck shuffle animation
 
+        //Get All cards and put them at the bottom of the deck
+        deck.PutCardsAtBottom();
+
+
+        //this part will later be called by the deck animation
+        dealer.ResetToStart();
+        PlayersManager.Instance.ResetPlayersToStart();
     }
 }

@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 132946375}
   - component: {fileID: 132946374}
   - component: {fileID: 132946373}
+  - component: {fileID: 132946376}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -323,7 +324,7 @@ MeshCollider:
   m_GameObject: {fileID: 132946371}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -377,6 +378,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132946371}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &132946376
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132946371}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.999999, y: 0.0918, z: 9.999999}
+  m_Center: {x: 0, y: -0.04186199, z: 0}
 --- !u!1 &132999067 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8161463967123878006, guid: 678a18d53a841b845aa745b6f772e5a1, type: 3}
@@ -5443,7 +5457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8607267965575258929, guid: 4541ddb2c258df146ac8f4605a044bd6, type: 3}
       propertyPath: stopAskingAtPoints
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8607267965830608426, guid: 4541ddb2c258df146ac8f4605a044bd6, type: 3}
       propertyPath: m_IsActive
@@ -6600,6 +6614,7 @@ MonoBehaviour:
   isPlayerTurn: 0
   endRoundCanvas: {fileID: 294167360}
   winnerText: {fileID: 1056379926}
+  deck: {fileID: 553729919}
 --- !u!4 &1896316003
 Transform:
   m_ObjectHideFlags: 0
@@ -7312,7 +7327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8607267965575258929, guid: 4541ddb2c258df146ac8f4605a044bd6, type: 3}
       propertyPath: stopAskingAtPoints
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8607267965830608425, guid: 4541ddb2c258df146ac8f4605a044bd6, type: 3}
       propertyPath: m_LocalScale.x

@@ -29,15 +29,12 @@ public class DealerHand : MonoBehaviour
             cardGO.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
             cardGO.transform.rotation = cardPosition.rotation;
 
-            UpdateCardSum(cardObject.GetValue());
-
             //deActivate the card so that the player can't pick it up again
             cardObject.RemoveInteraction();
 
             currentXOffset = currentXOffset + cardXOffset;
 
-            //Start the player turn if a card has been drawn
-            PlayersManager.Instance.StartPlayerTurn();
+            UpdateCardSum(cardObject.GetValue());
         }
     }
 
@@ -75,10 +72,19 @@ public class DealerHand : MonoBehaviour
         if(cardSum>21){
             Debug.Log("Exceeds for dealer");
             GameManager.Instance.EndGame();
+        }else{
+            //Start the player turn if a card has been drawn
+            PlayersManager.Instance.StartPlayerTurn();
         }
     }
     
     public int GetDealerCardSum(){
         return cardSum;
+    }
+
+    public void ResetToStart(){
+        currentXOffset = 0;
+        cardSum = 0;
+        cardSumText.text = cardSum.ToString();
     }
 }

@@ -45,6 +45,15 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
+    //Reset all players to the parameters they have at the start of the game
+    public void ResetPlayersToStart(){
+        for(int i=0; i<players.Count; i++){
+            players[i].ResetPlayerToStart();
+        }
+
+        StartPlayerTurn();
+    }
+
     //add +1 to the number of player that finished the turn, if all did then it's the dealer turn!
     public void AddWaitingForTurn(){
         numberOfPlayersWaitingTurn ++;
@@ -65,6 +74,7 @@ public class PlayersManager : MonoBehaviour
 
             GameManager.Instance.StartPlayerTurn();
         }else{
+            Debug.Log("Start DealerTurn");
             GameManager.Instance.StartDealerTurn();
             //GameManager.Instance.EndGame();
         }
@@ -74,6 +84,7 @@ public class PlayersManager : MonoBehaviour
     public bool CheckPlayersCanPlay(){
         for(int i = 0; i < players.Count; i++){
             if(!players[i].lost && !players[i].rejectCards){
+                Debug.Log(players[i].stateMachine.currentState);
                 return true;
             }
         }
@@ -96,16 +107,23 @@ public class PlayersManager : MonoBehaviour
         List<Player> playersWhoWon = new List<Player>();
 
         for(int i = 0; i < players.Count; i++){
-            if((players[i].GetCardSum() > dealerValue || dealerValue>21) && !players[i].lost){
+            //TODO check case when dealer has same points as player, that case is a draw...
+
+
+            if((players[i].GetCardSum() >= dealerValue || dealerValue>21) && !players[i].lost){
                 players[i].ChangeToWinState();
+                Debug.Log("CHANGING TO WIN");
                 playersWhoWon.Add(players[i]);
             }else{
+                Debug.Log("Changee to lsot state");
                 players[i].ChangeToLostState();
             }
         }
 
-        if(playersWhoWon.Count >0 ){
+        if(playersWhoWon.Count > 0 ){
             GameManager.Instance.PlayersWon(playersWhoWon);
+        }else{
+            GameManager.Instance.DealerWon();
         }
     }
 }

@@ -40,14 +40,16 @@ public class CardObject : MonoBehaviour
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public int GetValue(){
         return value;
+    }
+
+    public char GetSuit(){
+        return suitChar;
+    }
+
+    public Material GetMaterial(){
+        return this.meshRenderer.material;
     }
 
     //set the value and suit of the card
@@ -121,7 +123,7 @@ public class CardObject : MonoBehaviour
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsDealer)){
                 //assign card to dealer if possible
-                Debug.Log(hit.collider.gameObject);
+                //Debug.Log(hit.collider.gameObject);
                 if(hit.collider.gameObject.GetComponent<DealerHand>().CheckAssignCard()){
                     hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
                 }else{
