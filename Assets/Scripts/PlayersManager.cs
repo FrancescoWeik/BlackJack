@@ -83,7 +83,7 @@ public class PlayersManager : MonoBehaviour
     //if all players lost return true
     public bool CheckAllPlayersLost(){
         for(int i = 0; i < players.Count; i++){
-            Debug.Log(players[i].lost);
+            //Debug.Log(players[i].lost);
             if(!players[i].lost){
                 return false;
             }
@@ -93,12 +93,19 @@ public class PlayersManager : MonoBehaviour
 
     //Check which players won based on their card value. Receives the dealer card sum value as a parameter.
     public void CheckPlayerWin(int dealerValue){
+        List<Player> playersWhoWon = new List<Player>();
+
         for(int i = 0; i < players.Count; i++){
             if((players[i].GetCardSum() > dealerValue || dealerValue>21) && !players[i].lost){
                 players[i].ChangeToWinState();
+                playersWhoWon.Add(players[i]);
             }else{
                 players[i].ChangeToLostState();
             }
+        }
+
+        if(playersWhoWon.Count >0 ){
+            GameManager.Instance.PlayersWon(playersWhoWon);
         }
     }
 }

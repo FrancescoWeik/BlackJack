@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
 
     public bool isPlayerTurn;
 
+    public GameObject endRoundCanvas;
+    public Text winnerText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,13 +73,32 @@ public class GameManager : MonoBehaviour
     public void EndGame(){
         Debug.Log("end game");
         if(PlayersManager.Instance.CheckAllPlayersLost()){
-            Debug.Log("all players lost");
             //Dealer Won
+            DealerWon();
+
         }else{
             //Players won, which ones?
-            Debug.Log("Player Might have won");
+            //Debug.Log("Player Might have won");
             int dealerValue = dealer.GetDealerCardSum();
             PlayersManager.Instance.CheckPlayerWin(dealerValue);
         }
+    }
+
+    public void DealerWon(){
+        winnerText.text = "Dealer Won";
+        endRoundCanvas.SetActive(true);
+    }
+
+    public void PlayersWon(List<Player> playerList){
+        string textWinner = "Winners:\n";  
+        for(int i = 0; i < playerList.Count; i++){
+            textWinner = textWinner + "- Player " + i.ToString() + "\n";
+        }
+        winnerText.text =  textWinner;
+        endRoundCanvas.SetActive(true);
+    }
+
+    public void StartNextRound(){
+        Debug.Log("Starting next round");
     }
 }
