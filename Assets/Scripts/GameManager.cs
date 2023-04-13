@@ -53,7 +53,11 @@ public class GameManager : MonoBehaviour
         }else{
              //if dealer cannot draw then go back to player turn.
             if(!dealer.CheckCanDraw()){
-                PlayersManager.Instance.StartPlayerTurn();
+                if(PlayersManager.Instance.CheckPlayersCanPlay()){
+                    PlayersManager.Instance.StartPlayerTurn();
+                }else{
+                    EndGame();
+                }
             }
         }
     }
@@ -66,9 +70,13 @@ public class GameManager : MonoBehaviour
     public void EndGame(){
         Debug.Log("end game");
         if(PlayersManager.Instance.CheckAllPlayersLost()){
+            Debug.Log("all players lost");
             //Dealer Won
         }else{
             //Players won, which ones?
+            Debug.Log("Player Might have won");
+            int dealerValue = dealer.GetDealerCardSum();
+            PlayersManager.Instance.CheckPlayerWin(dealerValue);
         }
     }
 }

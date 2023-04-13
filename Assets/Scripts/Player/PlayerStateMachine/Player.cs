@@ -182,6 +182,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    //change the player to win state, it's always called from the player manager
+    public void ChangeToWinState(){
+        stateMachine.ChangeState(winState);
+    }
+
+    //only called from PlayerManager
+    public void ChangeToLostState(){
+        stateMachine.ChangeState(loseState);
+    }
+
     #region Checks
 
     //check if the player already received a card in this turn

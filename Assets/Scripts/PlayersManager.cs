@@ -65,7 +65,8 @@ public class PlayersManager : MonoBehaviour
 
             GameManager.Instance.StartPlayerTurn();
         }else{
-            GameManager.Instance.EndGame();
+            GameManager.Instance.StartDealerTurn();
+            //GameManager.Instance.EndGame();
         }
     }
 
@@ -88,5 +89,16 @@ public class PlayersManager : MonoBehaviour
             }
         }
         return true;
+    }
+
+    //Check which players won based on their card value. Receives the dealer card sum value as a parameter.
+    public void CheckPlayerWin(int dealerValue){
+        for(int i = 0; i < players.Count; i++){
+            if((players[i].GetCardSum() > dealerValue || dealerValue>21) && !players[i].lost){
+                players[i].ChangeToWinState();
+            }else{
+                players[i].ChangeToLostState();
+            }
+        }
     }
 }

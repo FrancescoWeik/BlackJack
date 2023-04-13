@@ -73,7 +73,12 @@ public class DealerHand : MonoBehaviour
 
         //Check if exceeding max blackjack number
         if(cardSum>21){
+            Debug.Log("Exceeds for dealer");
             GameManager.Instance.EndGame();
         }
+    }
+    
+    public int GetDealerCardSum(){
+        return cardSum;
     }
 }
