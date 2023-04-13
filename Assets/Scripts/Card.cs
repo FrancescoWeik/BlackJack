@@ -9,7 +9,7 @@ public class Card
     public int value;
     public Material material;
 
-    public Card(int suit, int value, GameObject cardMesh){
+    public Card(int suit, int value, Material cardMesh){
         switch(suit){
             case 0: suitChar = '♦'; break;
             case 1: suitChar = '♥'; break;
@@ -19,7 +19,7 @@ public class Card
         }
 
         this.value = value;
-        this.material = cardMesh.GetComponent<Renderer>().material;
+        this.material = cardMesh;
     }
 
     public void Print(){

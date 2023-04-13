@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     public bool decidedWhatToDo;
     public bool receivedCard;
     public bool waitingForNextTurn; //have to know if the player has no action to do to handle the start of the player turn in playerManager
+    public bool lost; //keep track if a player lost the game
+    public bool rejectCards; //keep track if a player rejects cards
 
     private string currentAnim;
 
@@ -88,17 +90,36 @@ public class Player : MonoBehaviour
         stateMachine.currentState.LogicUpdate();
     }
 
-    //reset all the boolean to false since it's the dealer turn
+    //reset all the boolean to false since it's the start of the player turn, unless player has already lost or can't ask for cards.
     public void ResetPlayerDecision(){
+
+        //if the player has decided not to take cards then he cannot change his mind at the next draw
+        if(stateMachine.currentState != rejectCardState && stateMachine.currentState != loseState){
+            decidedWhatToDo = false;
+            askingForCard = false;
+            receivedCard = false;
+            waitingForNextTurn = false;
+            stateMachine.ChangeState(decisionState);
+        }else{
+            waitingForNextTurn = false;
+            FinishTurn();
+        }
+    }
+
+    //reset the player for the start of a new game
+    public void ResetPlayerToStart(){
         decidedWhatToDo = false;
         askingForCard = false;
         receivedCard = false;
         waitingForNextTurn = false;
-
-        //if the player has decided not to take cards then he cannot change his mind at the next draw
-        if(stateMachine.currentState != rejectCardState && stateMachine.currentState != loseState){
-            stateMachine.ChangeState(decisionState);
-        }
+        lost = false;
+        rejectCards = false;
+        numberOfCards = 0;
+        cardSum = 0;
+        cardObjectList = new List<CardObject>();
+        currentXOffset = 0;
+        cardSumText.text = cardSum.ToString();
+        stateMachine.ChangeState(waitingForCardState);
     }
 
     public void FinishTurn(){
@@ -138,8 +159,6 @@ public class Player : MonoBehaviour
         //Add card object to the list of the cards of the player 
         cardObjectList.Add(cardObject);
 
-        UpdateCardSum(cardObject.GetValue());
-
         //remove the velocity from the rigidbody
         cardObject.SetVelocity(Vector3.zero);
 
@@ -147,6 +166,8 @@ public class Player : MonoBehaviour
         //Send card on the table in front of player faced up, (could move it slowly there with a transform.translate and removing rb forces)
         CardGameObject.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
         CardGameObject.transform.rotation = cardPosition.rotation;
+
+        UpdateCardSum(cardObject.GetValue());
 
         //deActivate the card so that the player can't pick it up again
         cardObject.RemoveInteraction();
@@ -158,9 +179,15 @@ public class Player : MonoBehaviour
     }
 
     public void UpdateCardSum(int value){
+        numberOfCards++;
+
         cardSum = cardSum + value;
 
         cardSumText.text = cardSum.ToString();
+
+        if(cardSum>21){
+            lost = true;
+        }
     }
 
     //function called by the card if dragged onto the player
@@ -170,6 +197,19 @@ public class Player : MonoBehaviour
             //cardObject.RemoveInteraction();
         }
     }
+
+    #region ChangeState region
+    //change the player to win state, it's always called from the player manager
+    public void ChangeToWinState(){
+        stateMachine.ChangeState(winState);
+    }
+
+    //only called from PlayerManager
+    public void ChangeToLostState(){
+        stateMachine.ChangeState(loseState);
+    }
+
+    #endregion
 
     #region Checks
 

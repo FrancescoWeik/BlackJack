@@ -13,6 +13,8 @@ public class PlayerRejectCardState : PlayerState
     {
         base.Enter();
 
+        player.rejectCards = true;
+
         //if a player rejects card then he has finished his turn and is waiting for the next turn.
         player.FinishTurn();
     }

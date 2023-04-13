@@ -22,7 +22,6 @@ public class DealerHand : MonoBehaviour
             CardObject cardObject = cardGO.GetComponent<CardObject>();
 
             cardObjectList.Add(cardObject);
-            UpdateCardSum(cardObject.GetValue());
 
             cardObject.SetVelocity(Vector3.zero);
 
@@ -35,8 +34,7 @@ public class DealerHand : MonoBehaviour
 
             currentXOffset = currentXOffset + cardXOffset;
 
-            //Start the player turn if a card has been drawn
-            PlayersManager.Instance.StartPlayerTurn();
+            UpdateCardSum(cardObject.GetValue());
         }
     }
 
@@ -68,6 +66,25 @@ public class DealerHand : MonoBehaviour
 
     public void UpdateCardSum(int value){
         cardSum = cardSum + value;
+        cardSumText.text = cardSum.ToString();
+
+        //Check if exceeding max blackjack number
+        if(cardSum>21){
+            Debug.Log("Exceeds for dealer");
+            GameManager.Instance.EndGame();
+        }else{
+            //Start the player turn if a card has been drawn
+            PlayersManager.Instance.StartPlayerTurn();
+        }
+    }
+    
+    public int GetDealerCardSum(){
+        return cardSum;
+    }
+
+    public void ResetToStart(){
+        currentXOffset = 0;
+        cardSum = 0;
         cardSumText.text = cardSum.ToString();
     }
 }
