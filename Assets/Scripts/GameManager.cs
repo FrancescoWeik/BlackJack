@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void StartDealerTurn(){
         isPlayerTurn = false;
-        Debug.Log("Dealer Turn");
+        //Debug.Log("Dealer Turn");
 
         //if all player exceeds 21 then you the dealer doesn't draw and wins
         if(PlayersManager.Instance.CheckAllPlayersLost()){
@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour
 
     //handle logic for when someone won the game
     public void EndGame(){
-        Debug.Log("end game");
         if(PlayersManager.Instance.CheckAllPlayersLost()){
             //Dealer Won
             DealerWon();
@@ -84,11 +83,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //function handling the case where the dealer won, it displays the canvas
     public void DealerWon(){
         winnerText.text = "Dealer Won";
         endRoundCanvas.SetActive(true);
     }
 
+    //function handling the case where the players won, it displays the canvas
     public void PlayersWon(List<Player> playerList){
         string textWinner = "Winners:\n";  
         for(int i = 0; i < playerList.Count; i++){
@@ -98,7 +99,11 @@ public class GameManager : MonoBehaviour
         endRoundCanvas.SetActive(true);
     }
 
+
     public void StartNextRound(){
         Debug.Log("Starting next round");
+
+        //Get All cards on the table and put them at the bottom
+
     }
 }

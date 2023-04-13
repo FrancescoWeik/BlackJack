@@ -74,10 +74,12 @@ public class Deck : MonoBehaviour
             Vector3 instatiatePosition = new Vector3(transform.position.x, transform.position.y + drawCardOffsetY, transform.position.z);
             Quaternion simpleCardRotation = new Quaternion(0, 0, 180, 1);
             Instantiate(simpleCard, instatiatePosition, simpleCardRotation, transform);
+        }else{
+            //TODO remove deck if finished
         }
     }
 
-    //Initialize the top card of the deck.
+    //Initialize the top card of the deck. Called from the card
     public void InitializeCard(CardObject cardObject){
         Card card = cards[cards.Count -1];
         cards.RemoveAt(cards.Count -1);
