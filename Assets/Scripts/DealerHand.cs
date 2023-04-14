@@ -7,6 +7,7 @@ public class DealerHand : MonoBehaviour
 {
     public List<CardObject> cardObjectList; //list of the cards that the dealer has
     private int cardSum; //sum of the cards
+    private int numberOfCards; //number of cards held by the dealer
 
     public int maxPointsNumber;
 
@@ -15,6 +16,10 @@ public class DealerHand : MonoBehaviour
     private float currentXOffset;
 
     public Text cardSumText;
+
+    private void Start(){
+        numberOfCards = 0;
+    }
 
 
     public void AssignCard(GameObject cardGO){
@@ -67,12 +72,18 @@ public class DealerHand : MonoBehaviour
     public void UpdateCardSum(int value){
         cardSum = cardSum + value;
         cardSumText.text = cardSum.ToString();
+        numberOfCards++;
 
         //Check if exceeding max blackjack number
         if(cardSum>21){
             Debug.Log("Exceeds for dealer");
             GameManager.Instance.EndGame();
-        }else{
+        }
+        else if(cardSum == 21 && numberOfCards == 2){
+            //it's a blackjack so end the game
+            GameManager.Instance.EndGame();
+        }
+        else{
             //Start the player turn if a card has been drawn
             PlayersManager.Instance.StartPlayerTurn();
         }
@@ -85,6 +96,7 @@ public class DealerHand : MonoBehaviour
     public void ResetToStart(){
         currentXOffset = 0;
         cardSum = 0;
+        numberOfCards = 0;
         cardSumText.text = cardSum.ToString();
     }
 }

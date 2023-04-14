@@ -119,4 +119,9 @@ public class GameManager : MonoBehaviour
     public void StartGame(int numberOfPlayers){
         PlayersManager.Instance.InstantiateAllPlayers(numberOfPlayers);
     }
+    
+    public void QuitGame(){
+        Debug.Log("Quit Game");
+        Application.Quit();
+    }
 }

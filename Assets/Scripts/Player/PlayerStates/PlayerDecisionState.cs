@@ -38,7 +38,12 @@ public class PlayerDecisionState : PlayerState
             }
         }*/
 
-        if(number > player.askingPercentage || player.ExceedMaxAskingPoints()){
+        //if the playeer score is less than the dealer and the dealer cannot draw anymore, the player has to draw otherwise he will lose for sure.
+        if(player.GetCardSum() < player.dealerHand.GetDealerCardSum() && (player.dealerHand.GetDealerCardSum()<21 && player.dealerHand.GetDealerCardSum()>17)){
+            stateMachine.ChangeState(player.waitingForCardState);
+        }
+
+        else if(number > player.askingPercentage || player.ExceedMaxAskingPoints()){
             //Do Not Ask For Card
             player.askingForCard = false;
             player.decidedWhatToDo = true;
