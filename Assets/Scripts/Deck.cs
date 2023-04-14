@@ -81,7 +81,6 @@ public class Deck : MonoBehaviour
             Quaternion simpleCardRotation = new Quaternion(0, 0, 180, 1);
             Instantiate(simpleCard, instatiatePosition, simpleCardRotation, transform);
         }else{
-            //TODO remove deck if finished
             col.enabled = false;
             meshRenderer.enabled = false;
         }
@@ -102,9 +101,13 @@ public class Deck : MonoBehaviour
             One way to do that is to search all the children of the deck (eexcept the last one) and add their card values to the deck.
         */
 
+        //reset deck so that I can see all the deck if it had 0 cards
+        col.enabled = true;
+        meshRenderer.enabled = true;
+
         //childCount -1 becase the last card has not been played and so it has to stay on the top!
         for(int i = 0; i < transform.childCount -1; i++){
-            Debug.Log(i);
+            //Debug.Log(i);
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
             char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
             Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();

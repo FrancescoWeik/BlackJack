@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     //I might want to create different scriptable player to have different animations for each, If I have some spare team I-ll do it
     public Animator anim;
 
+    public string playerName; 
+
     [SerializeField] private LayerMask whatIsCard;
     private int cardLayerNumber;
 
@@ -20,6 +22,8 @@ public class Player : MonoBehaviour
     public int stopAskingAtPoints = 20; //above 20 points the player won't ask for more cards
     public int askingPercentage = 7; //percentage out of ten, so with 7 is 70%
     public int maxBlackJack = 21;
+
+    public DealerHand dealerHand; //variable needed to check the hand of the dealer and compare it to yourself
 
     public bool askingForCard;
     public bool decidedWhatToDo;
@@ -50,6 +54,7 @@ public class Player : MonoBehaviour
     #region UI
 
     public Text cardSumText;
+    [SerializeField] private Text playerNameText;
 
     #endregion
 
@@ -70,6 +75,9 @@ public class Player : MonoBehaviour
     {
         anim = GetComponent<Animator>();
 
+        gameObject.name = playerName;
+        playerNameText.text = playerName;
+
         askingForCard = false;
         decidedWhatToDo = false;
         receivedCard = false;
@@ -79,6 +87,9 @@ public class Player : MonoBehaviour
         cardSum = 0;
 
         currentXOffset = 0;
+
+        //get the dealer hand at the start of the game
+        dealerHand = GameObject.Find("DealerField").GetComponent<DealerHand>();
 
         //At the start of the game all the player want a card
         stateMachine.Initialize(waitingForCardState);

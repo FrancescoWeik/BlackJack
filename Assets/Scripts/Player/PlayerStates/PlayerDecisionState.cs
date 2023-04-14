@@ -54,9 +54,17 @@ public class PlayerDecisionState : PlayerState
                 }
             }
         }else{
-            //if want a card then change to wait card state
-            player.decidedWhatToDo = true;
-            stateMachine.ChangeState(player.waitingForCardState);
+
+            //check if dealer has 17 or more, if player already has more than the dealer then do not ask cards
+            if(player.dealerHand.GetDealerCardSum() >= 17 && player.GetCardSum() >17){
+                player.decidedWhatToDo = false;
+                player.askingForCard = false;
+                stateMachine.ChangeState(player.rejectCardState);
+            }else{
+                //if want a card then change to wait card state
+                player.decidedWhatToDo = true;
+                stateMachine.ChangeState(player.waitingForCardState);
+            }
         }
     }
 }
