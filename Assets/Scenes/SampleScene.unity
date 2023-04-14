@@ -5245,6 +5245,20 @@ MonoBehaviour:
   numberOfPlayers: 1
   maxNumberOfPlayers: 5
   playerPrefab: {fileID: 8913258411496817774, guid: 4541ddb2c258df146ac8f4605a044bd6, type: 3}
+  playerNamesList:
+  - Ross
+  - Jack
+  - Ken
+  - Don
+  - Lucy
+  - Brian
+  - Matt
+  - Penelope
+  - Polly
+  - Thomas
+  - Elizabeth
+  - Ada
+  - Michael
   players: []
   possiblePlayerPositions:
   - {fileID: 837644362}

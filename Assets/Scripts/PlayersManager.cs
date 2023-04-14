@@ -10,6 +10,7 @@ public class PlayersManager : MonoBehaviour
     public int maxNumberOfPlayers;
 
     public GameObject playerPrefab;
+    [SerializeField] private List<string> playerNamesList;
     [SerializeField] private List<Player> players;
     [SerializeField] private List<Transform> possiblePlayerPositions;
 
@@ -32,15 +33,17 @@ public class PlayersManager : MonoBehaviour
         players = new List<Player>();
         this.numberOfPlayers = numberOfPlayers;
         for(int i = 0; i < numberOfPlayers; i++){
-            GameObject singlePlayer = Instantiate(playerPrefab, possiblePlayerPositions[i].position, possiblePlayerPositions[i].rotation);
+            GameObject singlePlayerGO = Instantiate(playerPrefab, possiblePlayerPositions[i].position, possiblePlayerPositions[i].rotation);
 
-            /**
-                TODO
-                change the percentage of wanting card for each player
-                maybe give each player a name so that it's easier to know who wins
-            **/
+            //assign asking percentage
+            Player singlePlayer = singlePlayerGO.GetComponent<Player>();
+            singlePlayer.askingPercentage = Random.Range(3,9);
 
-            players.Add(singlePlayer.GetComponent<Player>());
+            //assign player names
+            int randomPlayerName = Random.Range(0, playerNamesList.Count);
+            singlePlayer.playerName = playerNamesList[randomPlayerName];
+
+            players.Add(singlePlayer);
         }
     }
 
