@@ -12,9 +12,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject endRoundCanvas;
     public Text winnerText;
+    public GameObject menuScreen;
 
     public Deck deck; //need the deck to be able to handle the deck reset at end of game
-    public GameObject arrow;
+    public GameObject arrow; //arrow that points at the dealer field
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,14 @@ public class GameManager : MonoBehaviour
         //GameObject.DontDestroyOnLoad(this.gameObject);
         
         isPlayerTurn = true;
+    }
+
+    public void Update(){
+        if(Input.GetKey(KeyCode.Escape)){
+            //Open menu
+            //Time.timeScale = 0;
+            menuScreen.SetActive(true);
+        }
     }
 
     public void StartDealerTurn(){
@@ -121,6 +130,7 @@ public class GameManager : MonoBehaviour
     public void StartGame(int numberOfPlayers){
         PlayersManager.Instance.RemoveExistingPlayers();
         PlayersManager.Instance.InstantiateAllPlayers(numberOfPlayers);
+        isPlayerTurn = true;
     }
     
     public void QuitGame(){

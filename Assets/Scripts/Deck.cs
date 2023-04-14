@@ -18,7 +18,11 @@ public class Deck : MonoBehaviour
 
     [SerializeField] private GameObject fullDeck; //the full deck mesh
     [SerializeField] private GameObject halfDeck; //the half deck mesh
+    [SerializeField] private GameObject shuffleDeckMesh; //the gameobject used for the shuffle animation
     [SerializeField] private int halfDeckThreshold; //number of cards to have to change mesh to half deck
+    private bool shuffling;
+
+    public int numberOfChilds; //the number of the child of the deck gameobject, it's useful to know in order to perform animations and shuffling.
 
     //private Collider col;
 
@@ -27,12 +31,15 @@ public class Deck : MonoBehaviour
         //col = GetComponent<Collider>();
 
         InitializeDeck();
+        shuffling = false;
     }
 
     private void Update(){
         if(!CheckCard()){
             //Debug.Log("Card missing");
-            CreateEmptyCard();
+            if(!shuffling){
+                CreateEmptyCard();
+            }
         }else{
             //Debug.Log("Card on deck");
         }
@@ -53,11 +60,22 @@ public class Deck : MonoBehaviour
 
     //randomly shuffle all the cards inside the deck
     public void Shuffle(){
-        /**
-            TODO start an animation while shuffling the deck
-        */
 
-        Debug.Log(cards);
+        //if the deck contains no cards you can't shuffle it
+        if(cards.Count == 0){
+            return;
+        }
+
+        //Set the meshes and the last card to false
+        halfDeck.SetActive(false);
+        fullDeck.SetActive(false);
+        transform.GetChild(transform.childCount -1).gameObject.SetActive(false);
+
+        //play the deck animation
+        shuffling = true;
+        shuffleDeckMesh.SetActive(true);
+
+        //put the cards randomly in the deck
         for(int i=0; i<cards.Count; i++){
             Card temp = cards[i];
             int randomIndex = Random.Range(i, cards.Count);
@@ -133,7 +151,7 @@ public class Deck : MonoBehaviour
         }
 
         //i = 2 because deck has the half deck and the full deck as first children.
-        for(int i = 2; i < childListLength; i++){
+        for(int i = numberOfChilds; i < childListLength; i++){
             
             Debug.Log(i);
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
@@ -148,6 +166,15 @@ public class Deck : MonoBehaviour
         }
         
 
+    }
+
+    //called by the deckShuffleAnimation, set the deck mesh to active
+    public void FinishShuffleAnim(){
+        shuffleDeckMesh.SetActive(false);
+        halfDeck.SetActive(false);
+        fullDeck.SetActive(true);
+        transform.GetChild(transform.childCount -1).gameObject.SetActive(true);
+        shuffling = false;
     }
 
     void printDeck(){
