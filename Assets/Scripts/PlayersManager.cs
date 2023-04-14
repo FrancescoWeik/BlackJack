@@ -139,7 +139,7 @@ public class PlayersManager : MonoBehaviour
         List<Player> playersWhoWon = new List<Player>();
 
         for(int i = 0; i < players.Count; i++){
-            //TODO check case when dealer has same points as player, that case is a draw...
+            //TODO check case when dealer has same points as player, that case is a draw... For now it's a win for the player
 
 
             if((players[i].GetCardSum() >= dealerValue || dealerValue>21) && !players[i].lost){

@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject endRoundCanvas;
     public Text winnerText;
-    public GameObject menuScreen;
+    //public GameObject menuScreen;
+    public GameObject pauseMenuScreen;
+    public GameObject pauseButton;
 
     public Deck deck; //need the deck to be able to handle the deck reset at end of game
     public GameObject arrow; //arrow that points at the dealer field
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKey(KeyCode.Escape)){
             //Open menu
             //Time.timeScale = 0;
-            menuScreen.SetActive(true);
+            PauseGame();
         }
     }
 
@@ -131,10 +133,27 @@ public class GameManager : MonoBehaviour
         PlayersManager.Instance.RemoveExistingPlayers();
         PlayersManager.Instance.InstantiateAllPlayers(numberOfPlayers);
         isPlayerTurn = true;
+        pauseButton.SetActive(true);
     }
     
     public void QuitGame(){
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    public void PauseGame(){
+        //open pause game menu\
+        pauseButton.SetActive(false);
+        pauseMenuScreen.SetActive(true);
+
+        Time.timeScale = 0f;
+    }
+
+    public void UnPauseGame(){
+        //close pause game menu
+        pauseMenuScreen.SetActive(false);
+        pauseButton.SetActive(true);
+
+        Time.timeScale = 1f;
     }
 }
