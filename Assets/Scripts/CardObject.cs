@@ -29,11 +29,17 @@ public class CardObject : MonoBehaviour
     public LayerMask whatIsPlayer;
     public LayerMask whatIsDealer;
 
+    private AudioSource audioSource;
+
+    [SerializeField] private CardData cardData; //scriptable object containing some variables
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
+        audioSource = GetComponent<AudioSource>();
+
         //Debug.Log(meshRenderer);
         alreadyInitialized = false;
         isInteractable = true;
@@ -116,6 +122,7 @@ public class CardObject : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsPlayer)){
                 //assign card to player if asking for a card
                 if(hit.collider.gameObject.GetComponent<Player>().CheckAssignCard()){
+                    PlaySound(cardData.flipCardSound);
                     hit.collider.gameObject.GetComponent<Player>().AssignCard(gameObject);
                 }else{
                     Throw();
@@ -125,6 +132,7 @@ public class CardObject : MonoBehaviour
                 //assign card to dealer if possible
                 //Debug.Log(hit.collider.gameObject);
                 if(hit.collider.gameObject.GetComponent<DealerHand>().CheckAssignCard()){
+                    PlaySound(cardData.flipCardSound);
                     hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
                 }else{
                     Throw();
@@ -149,6 +157,10 @@ public class CardObject : MonoBehaviour
     }
 
     private void Throw(){
+        //play sound
+        PlaySound(cardData.throwCardSound);
+        
+        //calculate direction
         lastPosition = transform.position;
         Vector3 directionXY = (lastPosition - startPosition).normalized;
         Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
@@ -165,6 +177,10 @@ public class CardObject : MonoBehaviour
 
     public void RemoveInteraction(){
         isInteractable = false;
+    }
+
+    private void PlaySound(AudioClip audio){
+        audioSource.PlayOneShot(audio);
     }
 
 

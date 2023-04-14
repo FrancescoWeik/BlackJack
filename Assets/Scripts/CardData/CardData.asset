@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f570ab7881d6ac344b68a353c27c0ab4, type: 3}
+  m_Name: CardData
+  m_EditorClassIdentifier: 
+  flipCardSound: {fileID: 8300000, guid: 8490cda842dc6574daf5bb1c8d12b67c, type: 3}
+  throwCardSound: {fileID: 8300000, guid: 584e6dda4a6672142883b27fe5a73bc1, type: 3}

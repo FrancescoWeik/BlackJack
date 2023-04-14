@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerLostState : PlayerState
 {
-    public PlayerLostState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerLostState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
     }

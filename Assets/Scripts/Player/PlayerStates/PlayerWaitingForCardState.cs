@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerWaitingForCardState : PlayerState
 {   
 
-    public PlayerWaitingForCardState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerWaitingForCardState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
     }

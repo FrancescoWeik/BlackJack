@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 
     //I might want to create different scriptable player to have different animations for each, If I have some spare team I-ll do it
     public Animator anim;
+    private AudioSource audioSource;
+
+    [SerializeField] private PlayerData playerData; //data holding some player variables.
 
     public string playerName; 
 
@@ -62,18 +65,19 @@ public class Player : MonoBehaviour
     private void Awake(){
         stateMachine = new PlayerStateMachine();
 
-        idleState = new PlayerIdleState(this, stateMachine, "idle");
-        loseState = new PlayerLostState(this, stateMachine, "lose");
-        winState = new PlayerWinState(this, stateMachine, "win"); 
-        waitingForCardState = new PlayerWaitingForCardState(this, stateMachine, "asking"); 
-        rejectCardState = new PlayerRejectCardState(this, stateMachine, "notAsking");
-        decisionState = new PlayerDecisionState(this, stateMachine, "idle");
+        idleState = new PlayerIdleState(this, stateMachine, playerData, "idle");
+        loseState = new PlayerLostState(this, stateMachine, playerData, "lose");
+        winState = new PlayerWinState(this, stateMachine, playerData, "win"); 
+        waitingForCardState = new PlayerWaitingForCardState(this, stateMachine, playerData, "asking"); 
+        rejectCardState = new PlayerRejectCardState(this, stateMachine, playerData, "notAsking");
+        decisionState = new PlayerDecisionState(this, stateMachine, playerData, "idle");
     }
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         gameObject.name = playerName;
         playerNameText.text = playerName;
@@ -208,6 +212,28 @@ public class Player : MonoBehaviour
             //cardObject.RemoveInteraction();
         }
     }
+
+    #region Sounds
+
+    //Play the sound one time only
+    public void PlayOneShotSound(AudioClip audio){
+        audioSource.loop = false;
+        audioSource.PlayOneShot(audio);
+    }
+
+    //Play sound in loop
+    public void PlaySound(AudioClip audio){
+        audioSource.loop = true;
+        audioSource.clip = audio;
+        audioSource.Play();
+    }
+
+    //stop sound
+    public void StopSound(){
+        audioSource.Stop();
+    }
+
+    #endregion
 
     #region ChangeState region
     //change the player to win state, it's always called from the player manager

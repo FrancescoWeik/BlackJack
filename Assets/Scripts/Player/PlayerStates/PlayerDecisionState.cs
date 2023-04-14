@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerDecisionState : PlayerState
 {
     int number;
-    public PlayerDecisionState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerDecisionState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData,  animBoolName)
     {
 
     }

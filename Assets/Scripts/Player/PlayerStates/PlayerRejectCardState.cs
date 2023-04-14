@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerRejectCardState : PlayerState
 {
-    public PlayerRejectCardState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerRejectCardState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
     }
