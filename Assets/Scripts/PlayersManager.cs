@@ -16,6 +16,8 @@ public class PlayersManager : MonoBehaviour
 
     public int numberOfPlayersWaitingTurn;
 
+    [SerializeField] private GameObject playerTurnCanvas;
+
     void Start()
     {
         if(Instance!=null){
@@ -47,6 +49,14 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
+    //Remove all the existing players from the scene
+    public void RemoveExistingPlayers(){
+        Debug.Log(numberOfPlayers);
+        for(int i=0; i < numberOfPlayers; i++){
+            Destroy(players[i].gameObject);
+        }
+    }
+
     //Checks if all the players have finished deciding what to do, since it takes so little I can add a decision timer to make the dealer wait
     public bool CheckAllPlayerFinished(){
         for(int i=0; i<players.Count; i++){
@@ -59,6 +69,10 @@ public class PlayersManager : MonoBehaviour
 
     //Reset all players decision when the player turn starts.
     public void ResetPlayersDecisions(){
+
+        //show the user that players are choosing what to do
+        //playerTurnCanvas.SetActive(true);
+
         for(int i=0; i<players.Count; i++){
             players[i].ResetPlayerDecision();
         }
@@ -91,7 +105,6 @@ public class PlayersManager : MonoBehaviour
             //reset the player decisions at the start of their turn, resetting the animations too if they haven't lost or might card
             ResetPlayersDecisions();
 
-            GameManager.Instance.StartPlayerTurn();
         }else{
             Debug.Log("Start DealerTurn");
             GameManager.Instance.StartDealerTurn();

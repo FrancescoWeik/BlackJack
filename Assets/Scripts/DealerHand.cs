@@ -85,7 +85,8 @@ public class DealerHand : MonoBehaviour
         }
         else{
             //Start the player turn if a card has been drawn
-            PlayersManager.Instance.StartPlayerTurn();
+            //PlayersManager.Instance.StartPlayerTurn();
+            GameManager.Instance.StartPlayerTurn();
         }
     }
     

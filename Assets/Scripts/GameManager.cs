@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Text winnerText;
 
     public Deck deck; //need the deck to be able to handle the deck reset at end of game
+    public GameObject arrow;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        GameObject.DontDestroyOnLoad(this.gameObject);
+        //GameObject.DontDestroyOnLoad(this.gameObject);
         
         isPlayerTurn = true;
     }
@@ -62,12 +63,24 @@ public class GameManager : MonoBehaviour
                 }else{
                     EndGame();
                 }
+            }else{
+                //dealer turn
+                Debug.Log("Dealer turn");
+
+                //activate arrow
+                arrow.SetActive(true);
             }
         }
     }
 
     public void StartPlayerTurn(){
         isPlayerTurn = true;
+
+        //disable arrow
+        arrow.SetActive(false);
+
+        //start the player turn
+        PlayersManager.Instance.StartPlayerTurn();
     }
 
     //handle logic for when someone won the game
@@ -109,14 +122,18 @@ public class GameManager : MonoBehaviour
         //Get All cards and put them at the bottom of the deck
         deck.PutCardsAtBottom();
 
-
+        //disable arrow
+        arrow.SetActive(false);
+        
         //this part will later be called by the deck animation
         dealer.ResetToStart();
         PlayersManager.Instance.ResetPlayersToStart();
+        isPlayerTurn = true;
     }
 
     //Function called using the ui, it starts the game
     public void StartGame(int numberOfPlayers){
+        PlayersManager.Instance.RemoveExistingPlayers();
         PlayersManager.Instance.InstantiateAllPlayers(numberOfPlayers);
     }
     
