@@ -30,20 +30,6 @@ public class GameManager : MonoBehaviour
         isPlayerTurn = true;
     }
 
-    // Update is called once per frame
-    /*void Update()
-    {
-        if(isPlayerTurn){
-            //bool finishedDeciding = PlayersManager.Instance.CheckAllPlayerFinished();
-            //if(finishedDeciding){
-                //StartDealerTurn();
-            //}
-        }else{
-            //dealer turn
-        }
-    }*/
-
-
     public void StartDealerTurn(){
         isPlayerTurn = false;
         //Debug.Log("Dealer Turn");

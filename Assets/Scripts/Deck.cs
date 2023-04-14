@@ -120,10 +120,22 @@ public class Deck : MonoBehaviour
         halfDeck.SetActive(false);
         //meshRenderer.enabled = true;
 
-        //childCount -1 becase the last card has not been played and so it has to stay on the top!
-        //i = 2 because i have the half deck and full deck as first children.
-        for(int i = 2; i < transform.childCount -1; i++){
+        //Check if I have no card in the deck
+        int childListLength;
+        if(cards.Count == 0){
+            //last card havee been played, remove it too
+            childListLength = transform.childCount;
+            Debug.Log("All Cards");
+        }else{
+            //childCount -1 becase the last card has not been played and so it has to stay on the top!
+            childListLength = transform.childCount -1;
+            Debug.Log("All Cards minus the top one");
+        }
 
+        //i = 2 because deck has the half deck and the full deck as first children.
+        for(int i = 2; i < childListLength; i++){
+            
+            Debug.Log(i);
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
             char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
             Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();
