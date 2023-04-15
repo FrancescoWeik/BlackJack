@@ -33,8 +33,16 @@ public class CardObject : MonoBehaviour
 
     [SerializeField] private CardData cardData; //scriptable object containing some variables
 
-    //for debugging
-    public GameObject cubedraw;
+    private bool isDragging;
+
+    public void FixedUpdate(){
+        if(isDragging){
+            startPosition = transform.position;
+
+            Vector3 newPosition = GetMouseWorldPos() + mOffset;
+            rb.MovePosition(newPosition);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -86,8 +94,11 @@ public class CardObject : MonoBehaviour
     //When a card is clicked check if it has been initialized, if not then initialize it
     public void OnMouseDown(){
         if(isInteractable){
+            isDragging = true;
             //freeze card rotation
             rb.freezeRotation = true;
+
+            rb.detectCollisions = true;
             
             mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
             mOffset = transform.position - GetMouseWorldPos();
@@ -106,8 +117,9 @@ public class CardObject : MonoBehaviour
     }
     
     //this is called every frame update if the gameobject is being dragged
-    public void OnMouseDrag(){
+    /*public void OnMouseDrag(){
         if(isInteractable){
+
             //before updating position, save it in the variable
             startPosition = transform.position;
 
@@ -117,10 +129,11 @@ public class CardObject : MonoBehaviour
         }
 
         //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
-    }
+    }*/
 
     public void OnMouseUp(){
         if(isInteractable){
+            isDragging = false;
             rb.freezeRotation = false;
 
             //Check if on a player or dealer, if it is then drop it on player,
@@ -182,6 +195,7 @@ public class CardObject : MonoBehaviour
         */
         //DrawCube(transform.position);
 
+        //calculate direction
         lastPosition = transform.position;
         Vector3 directionXY = (lastPosition - startPosition).normalized;
         Vector3 directionXZ;
@@ -211,10 +225,5 @@ public class CardObject : MonoBehaviour
     private void PlaySound(AudioClip audio){
         audioSource.PlayOneShot(audio);
     }
-
-    private void DrawCube(Vector3 pos){
-        Instantiate(cubedraw, pos, Quaternion.identity);
-    }
-
 
 }
