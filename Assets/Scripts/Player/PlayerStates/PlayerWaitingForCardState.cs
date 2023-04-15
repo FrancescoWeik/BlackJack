@@ -13,6 +13,7 @@ public class PlayerWaitingForCardState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetCurrentStateCanvas("Waiting card state");
 
         player.askingForCard = true;
     }

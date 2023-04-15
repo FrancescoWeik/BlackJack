@@ -12,6 +12,7 @@ public class PlayerRejectCardState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetCurrentStateCanvas("Reject card state");
 
         player.rejectCards = true;
 

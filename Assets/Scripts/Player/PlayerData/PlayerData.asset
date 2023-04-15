@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   winSound: {fileID: 8300000, guid: c59afe589865ca44790186c31965e0c2, type: 3}
-  lostSound: {fileID: 0}
+  lostSound: {fileID: 8300000, guid: f120709abf33c0e42ab8067c2c2ae206, type: 3}

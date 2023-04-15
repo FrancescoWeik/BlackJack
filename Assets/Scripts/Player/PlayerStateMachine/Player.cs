@@ -41,6 +41,8 @@ public class Player : MonoBehaviour
     public float cardXOffset; //offset for the x position for each card that is given to the player
     private float currentXOffset; //current offset to apply to the card position
 
+    public bool showStats;
+
     #region State variables
 
     public PlayerStateMachine stateMachine{get; private set;}
@@ -58,6 +60,10 @@ public class Player : MonoBehaviour
 
     public Text cardSumText;
     [SerializeField] private Text playerNameText;
+    [SerializeField] private GameObject statsCanvas;
+    [SerializeField] private Text statsPlayerName;
+    [SerializeField] private Text statsDrawPercentage;
+    [SerializeField] private Text statsCurrentState;
 
     #endregion
 
@@ -94,6 +100,8 @@ public class Player : MonoBehaviour
 
         //get the dealer hand at the start of the game
         dealerHand = GameObject.Find("DealerField").GetComponent<DealerHand>();
+
+        showStats = false;
 
         //At the start of the game all the player want a card
         stateMachine.Initialize(waitingForCardState);
@@ -212,6 +220,38 @@ public class Player : MonoBehaviour
             //cardObject.RemoveInteraction();
         }
     }
+
+    public void OnMouseOver(){
+        if(showStats){
+            statsCanvas.SetActive(true);
+        }
+    }
+
+    public void OnMouseExit(){
+        statsCanvas.SetActive(false);
+    }
+
+    public void SetName(string name){
+        playerName = name;
+        statsPlayerName.text = playerName;
+    }
+
+    public void SetPercentage(int percentage){
+        askingPercentage = percentage;
+        SetPercentageCanvas(percentage);
+    }
+
+    #region Canvas Stats
+
+    public void SetPercentageCanvas(int percentage){
+        statsDrawPercentage.text = percentage.ToString() + "0%";
+    }
+
+    public void SetCurrentStateCanvas(string canvasState){
+        statsCurrentState.text = canvasState;
+    }
+
+    #endregion
 
     #region Sounds
 

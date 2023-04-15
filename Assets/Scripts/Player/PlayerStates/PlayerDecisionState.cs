@@ -15,6 +15,7 @@ public class PlayerDecisionState : PlayerState
         base.Enter();
 
         number = Random.Range(0,10);
+        player.SetCurrentStateCanvas("Decision state");
     }
 
     public override void Exit()

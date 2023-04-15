@@ -12,6 +12,7 @@ public class PlayerWinState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetCurrentStateCanvas("Win state");
 
         PlayClappingSound();
     }

@@ -12,6 +12,8 @@ public class PlayerIdleState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        player.SetCurrentStateCanvas("Idle state");
     }
 
     public override void Exit()

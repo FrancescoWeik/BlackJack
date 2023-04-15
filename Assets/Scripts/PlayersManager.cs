@@ -39,11 +39,13 @@ public class PlayersManager : MonoBehaviour
 
             //assign asking percentage
             Player singlePlayer = singlePlayerGO.GetComponent<Player>();
-            singlePlayer.askingPercentage = Random.Range(3,9);
+            singlePlayer.SetPercentage(Random.Range(3,9));
+            //singlePlayer.askingPercentage = Random.Range(3,9);
 
             //assign player names
             int randomPlayerName = Random.Range(0, playerNamesList.Count);
-            singlePlayer.playerName = playerNamesList[randomPlayerName];
+            singlePlayer.SetName(playerNamesList[randomPlayerName]);
+            //singlePlayer.playerName = playerNamesList[randomPlayerName];
 
             players.Add(singlePlayer);
         }
@@ -156,6 +158,20 @@ public class PlayersManager : MonoBehaviour
             GameManager.Instance.PlayersWon(playersWhoWon);
         }else{
             GameManager.Instance.DealerWon();
+        }
+    }
+
+    //activate all the player canvases showing their stats. They will be visible only on mouse hover
+    public void ShowPlayerStats(){
+        for(int i=0; i < numberOfPlayers; i++){
+            players[i].showStats = true;
+        }
+    }
+
+    //remove the player canvases showing their stats
+    public void RemovePlayerStats(){
+        for(int i=0; i < numberOfPlayers; i++){
+            players[i].showStats = false;
         }
     }
 }
