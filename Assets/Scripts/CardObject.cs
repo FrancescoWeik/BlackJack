@@ -35,9 +35,13 @@ public class CardObject : MonoBehaviour
 
     private bool isDragging;
 
+    private Vector3 startMousePosition;
+
     public void FixedUpdate(){
         if(isDragging){
+
             startPosition = transform.position;
+            startMousePosition = Camera.main.WorldToScreenPoint(startPosition);
 
             Vector3 newPosition = GetMouseWorldPos() + mOffset;
             rb.MovePosition(newPosition);
@@ -97,6 +101,7 @@ public class CardObject : MonoBehaviour
             isDragging = true;
             //freeze card rotation
             rb.freezeRotation = true;
+            rb.useGravity = false;
 
             rb.detectCollisions = true;
             
@@ -135,6 +140,7 @@ public class CardObject : MonoBehaviour
         if(isInteractable){
             isDragging = false;
             rb.freezeRotation = false;
+            rb.useGravity = true;
 
             //Check if on a player or dealer, if it is then drop it on player,
             Ray ray;
@@ -178,28 +184,20 @@ public class CardObject : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 
+    //Throw the card based on the y and x position of the mouse. The y corresponds to the z during the throw, while the y of the card during the throw is fixed.
     private void Throw(){
         //play sound
         PlaySound(cardData.throwCardSound);
-        
+
+        //calculate direction
         /*
-        //calculate direction
-        lastPosition = transform.position;
-        Vector3 directionXY = (lastPosition - startPosition).normalized;
-        Vector3 directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-
-        //apply force in the direction
-        rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
-        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
-        */
-        //DrawCube(transform.position);
-
-        //calculate direction
         lastPosition = transform.position;
         Vector3 directionXY = (lastPosition - startPosition).normalized;
         Vector3 directionXZ;
 
+        Debug.Log(lastPosition);
+        Debug.Log(directionXY);
+        //Only throw the card in the x and z directions. The y is fixed here to 0 or yOffset.
         if(directionXY.y <= 0){
             directionXZ = new Vector3(directionXY.x, 0, 0);
         }else{
@@ -210,6 +208,44 @@ public class CardObject : MonoBehaviour
         //apply force in the direction
         //rb.AddForce(directionXZ * 11f,ForceMode.Impulse);
         rb.velocity = directionXZ * forceMultiplier * 100 * Time.deltaTime;
+        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+        */
+
+        //get the last mouse position
+        Vector3 lastMousePosition = Camera.main.WorldToScreenPoint(transform.position);
+
+        //get the difference between the previous mouse position and the current one
+        float mouseXMovement = lastMousePosition.x - startMousePosition.x;
+        float mouseYMovement = lastMousePosition.y - startMousePosition.y;
+
+        Vector3 newPositionZ;
+        Vector3 newPositionX;
+
+        Vector3 newPositionZNoY;
+        Vector3 newPositionXNoY;
+
+        //if the mouse movement is 0 then do not throw the card in the x direction
+        if(mouseXMovement == 0){
+            newPositionXNoY = new Vector3(0,0,0);
+        }else{
+            //calculate the x direction with respect to the camera rotation
+            newPositionX = transform.position + (Camera.main.transform.right * mouseXMovement);
+            newPositionXNoY = new Vector3(newPositionX.x, yOffset, newPositionX.z);
+        }
+        //if the mouse movement is 0 or less then do not throw the card in the z direction (we are converting the y mouse position to the z direction)
+        if(mouseYMovement <=0){
+            newPositionZNoY = new Vector3(0,0,0);
+        }else{
+            //calculate the z direction with respect to the camera rotation
+            newPositionZ = transform.position + (Camera.main.transform.forward * mouseYMovement);
+            newPositionZNoY = new Vector3(newPositionZ.x, yOffset, newPositionZ.z);
+        }
+
+        //find the result vector of the previous 2
+        Vector3 movementVector = (newPositionZNoY + newPositionXNoY).normalized;
+
+        //apply velocity in the direction of the vector.
+        rb.velocity = movementVector * forceMultiplier * 100 * Time.deltaTime;
         rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
 
     }

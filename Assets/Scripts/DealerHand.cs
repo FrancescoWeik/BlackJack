@@ -129,6 +129,7 @@ public class DealerHand : MonoBehaviour
     public void ResetToStart(){
         currentXOffset = 0;
         cardSum = 0;
+        numberOfAces = 0;
         numberOfCards = 0;
         cardSumText.text = cardSum.ToString();
     }

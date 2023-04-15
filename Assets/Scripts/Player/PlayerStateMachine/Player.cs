@@ -141,6 +141,7 @@ public class Player : MonoBehaviour
         rejectCards = false;
         numberOfCards = 0;
         cardSum = 0;
+        numberOfAces = 0;
         cardObjectList = new List<CardObject>();
         currentXOffset = 0;
         cardSumText.text = cardSum.ToString();
