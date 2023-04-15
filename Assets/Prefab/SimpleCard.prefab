@@ -136,6 +136,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   cardData: {fileID: 11400000, guid: 240b2aa0ac1b1c44081dfda2faecfb3c, type: 2}
+  cubedraw: {fileID: 3292850364531045544, guid: af2d7f563ccab7f40b6eebc35e5558bf, type: 3}
 --- !u!82 &-5837382812218932534
 AudioSource:
   m_ObjectHideFlags: 0

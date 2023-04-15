@@ -33,6 +33,9 @@ public class CardObject : MonoBehaviour
 
     [SerializeField] private CardData cardData; //scriptable object containing some variables
 
+    //for debugging
+    public GameObject cubedraw;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,10 +104,16 @@ public class CardObject : MonoBehaviour
             }
         }
     }
-
+    
+    //this is called every frame update if the gameobject is being dragged
     public void OnMouseDrag(){
         if(isInteractable){
+            //before updating position, save it in the variable
+            startPosition = transform.position;
+
+            //update the position
             transform.position = GetMouseWorldPos() + mOffset;
+
         }
 
         //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
@@ -160,6 +169,7 @@ public class CardObject : MonoBehaviour
         //play sound
         PlaySound(cardData.throwCardSound);
         
+        /*
         //calculate direction
         lastPosition = transform.position;
         Vector3 directionXY = (lastPosition - startPosition).normalized;
@@ -169,6 +179,25 @@ public class CardObject : MonoBehaviour
         //apply force in the direction
         rb.AddForce(directionXZ * forceMultiplier,ForceMode.Impulse);
         rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+        */
+        //DrawCube(transform.position);
+
+        lastPosition = transform.position;
+        Vector3 directionXY = (lastPosition - startPosition).normalized;
+        Vector3 directionXZ;
+
+        if(directionXY.y <= 0){
+            directionXZ = new Vector3(directionXY.x, 0, 0);
+        }else{
+            directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
+        }
+        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
+
+        //apply force in the direction
+        //rb.AddForce(directionXZ * 11f,ForceMode.Impulse);
+        rb.velocity = directionXZ * forceMultiplier * 100 * Time.deltaTime;
+        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+
     }
 
     public void SetVelocity(Vector3 velocity){
@@ -181,6 +210,10 @@ public class CardObject : MonoBehaviour
 
     private void PlaySound(AudioClip audio){
         audioSource.PlayOneShot(audio);
+    }
+
+    private void DrawCube(Vector3 pos){
+        Instantiate(cubedraw, pos, Quaternion.identity);
     }
 
 
