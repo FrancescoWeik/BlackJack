@@ -24,7 +24,7 @@ public class DealerHand : MonoBehaviour
         cardSum = 0;
     }
 
-
+    //Give card to the dealer
     public void AssignCard(GameObject cardGO){
         if(cardSum<maxPointsNumber){
             CardObject cardObject = cardGO.GetComponent<CardObject>();
@@ -52,9 +52,6 @@ public class DealerHand : MonoBehaviour
         if(GameManager.Instance.isPlayerTurn){
             return false;
         }
-
-        //check if player has drawn a card, if he did then you can draw, otherwise you can't
-
 
         //check if points are more or equals to 17, if they are then you can't draw
         if(cardSum>=maxPointsNumber){
@@ -114,6 +111,7 @@ public class DealerHand : MonoBehaviour
         }
     }
 
+    //Check if dealer has any aces
     public bool CheckAces(){
         if(numberOfAces > 0){
             return true;

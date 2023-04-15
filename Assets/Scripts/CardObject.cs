@@ -112,30 +112,14 @@ public class CardObject : MonoBehaviour
 
             if(checkAlreadyInitialized()){
                 //do not reinitialize card, do nothing
-                //Debug.Log("Already Initialized");
             }else{
                 alreadyInitialized = true;
                 deck.InitializeCard(this);
-                //Debug.Log("initialized Card");
             }
         }
     }
-    
-    //this is called every frame update if the gameobject is being dragged
-    /*public void OnMouseDrag(){
-        if(isInteractable){
 
-            //before updating position, save it in the variable
-            startPosition = transform.position;
-
-            //update the position
-            transform.position = GetMouseWorldPos() + mOffset;
-
-        }
-
-        //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
-    }*/
-
+    //Called when releasing the card, check if hitting a player or the dealer field, if you are then assign the card, else throw the card
     public void OnMouseUp(){
         if(isInteractable){
             isDragging = false;
@@ -158,7 +142,6 @@ public class CardObject : MonoBehaviour
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsDealer)){
                 //assign card to dealer if possible
-                //Debug.Log(hit.collider.gameObject);
                 if(hit.collider.gameObject.GetComponent<DealerHand>().CheckAssignCard()){
                     PlaySound(cardData.flipCardSound);
                     hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
@@ -188,28 +171,6 @@ public class CardObject : MonoBehaviour
     private void Throw(){
         //play sound
         PlaySound(cardData.throwCardSound);
-
-        //calculate direction
-        /*
-        lastPosition = transform.position;
-        Vector3 directionXY = (lastPosition - startPosition).normalized;
-        Vector3 directionXZ;
-
-        Debug.Log(lastPosition);
-        Debug.Log(directionXY);
-        //Only throw the card in the x and z directions. The y is fixed here to 0 or yOffset.
-        if(directionXY.y <= 0){
-            directionXZ = new Vector3(directionXY.x, 0, 0);
-        }else{
-            directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-        }
-        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-
-        //apply force in the direction
-        //rb.AddForce(directionXZ * 11f,ForceMode.Impulse);
-        rb.velocity = directionXZ * forceMultiplier * 100 * Time.deltaTime;
-        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
-        */
 
         //get the last mouse position
         Vector3 lastMousePosition = Camera.main.WorldToScreenPoint(transform.position);
@@ -254,6 +215,7 @@ public class CardObject : MonoBehaviour
         rb.velocity = velocity;
     }
 
+    //user cannot interact with the card anymore (it's either on a player hand or on the dealer field)
     public void RemoveInteraction(){
         isInteractable = false;
     }
