@@ -189,7 +189,9 @@ public class Player : MonoBehaviour
 
         //should move the card in the direction of its local axis
         //Send card on the table in front of player faced up, (could move it slowly there with a transform.translate and removing rb forces)
-        CardGameObject.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
+        CardGameObject.transform.position = new Vector3 (cardPosition.position.x, cardPosition.position.y, cardPosition.position.z);
+        //Change local position so that the card moves on the x axis with respect to the card rotation
+        CardGameObject.transform.localPosition += transform.right * currentXOffset;
         CardGameObject.transform.rotation = cardPosition.rotation;
 
         UpdateCardSum(cardObject.GetValue());

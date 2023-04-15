@@ -3539,7 +3539,7 @@ MonoBehaviour:
   lost: 0
   rejectCards: 0
   cardPosition: {fileID: 8607267967119703968}
-  cardXOffset: 0.3
+  cardXOffset: 3
   showStats: 0
   cardSumText: {fileID: 8607267966533500234}
   playerNameText: {fileID: 2297313014231341608}
