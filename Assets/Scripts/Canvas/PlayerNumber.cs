@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerNumber : MonoBehaviour
 {
@@ -10,15 +11,19 @@ public class PlayerNumber : MonoBehaviour
     private int currentValue;
     public int maxPlayerNumber;
     public int minPlayerNumber;
+    public PlayerNumberScriptable playerNumberScriptable;
 
     private void Start(){
         currentValue = 1;
         numberPlayerInputField.text = currentValue.ToString();
     }
 
-    public void StartGame(){
+    public void StartGame(string sceneName){
         Debug.Log("Start game");
-        GameManager.Instance.StartGame(currentValue);
+        playerNumberScriptable.numberOfPlayer = currentValue; 
+        LevelManager.Instance.LoadScene(sceneName);
+        //SceneManager.LoadScene(sceneName);
+        //GameManager.Instance.StartGame(currentValue);
     }
 
     public void IncrementValue(){

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public Deck deck; //need the deck to be able to handle the deck reset at end of game
     public GameObject arrow; //arrow that points at the dealer field
 
+    public PlayerNumberScriptable playerNumberScriptable;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
         //GameObject.DontDestroyOnLoad(this.gameObject);
         
         isPlayerTurn = true;
+        StartGame(playerNumberScriptable.numberOfPlayer);
     }
 
     public void Update(){
@@ -136,9 +139,11 @@ public class GameManager : MonoBehaviour
         pauseButton.SetActive(true);
     }
     
-    public void QuitGame(){
-        Debug.Log("Quit Game");
-        Application.Quit();
+    public void QuitToMenu(){
+        //Debug.Log("Quit Game");
+        //Application.Quit();
+        Time.timeScale = 1f;
+        LevelManager.Instance.LoadScene("MenuScene"); 
     }
 
     public void PauseGame(){
