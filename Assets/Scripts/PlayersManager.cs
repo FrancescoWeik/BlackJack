@@ -16,6 +16,8 @@ public class PlayersManager : MonoBehaviour
 
     public int numberOfPlayersWaitingTurn;
 
+    [SerializeField] private GameObject playerTurnCanvas;
+
     void Start()
     {
         if(Instance!=null){
@@ -37,13 +39,23 @@ public class PlayersManager : MonoBehaviour
 
             //assign asking percentage
             Player singlePlayer = singlePlayerGO.GetComponent<Player>();
-            singlePlayer.askingPercentage = Random.Range(3,9);
+            singlePlayer.SetPercentage(Random.Range(3,9));
+            //singlePlayer.askingPercentage = Random.Range(3,9);
 
             //assign player names
             int randomPlayerName = Random.Range(0, playerNamesList.Count);
-            singlePlayer.playerName = playerNamesList[randomPlayerName];
+            singlePlayer.SetName(playerNamesList[randomPlayerName]);
+            //singlePlayer.playerName = playerNamesList[randomPlayerName];
 
             players.Add(singlePlayer);
+        }
+    }
+
+    //Remove all the existing players from the scene
+    public void RemoveExistingPlayers(){
+        Debug.Log(numberOfPlayers);
+        for(int i=0; i < numberOfPlayers; i++){
+            Destroy(players[i].gameObject);
         }
     }
 
@@ -59,6 +71,10 @@ public class PlayersManager : MonoBehaviour
 
     //Reset all players decision when the player turn starts.
     public void ResetPlayersDecisions(){
+
+        //show the user that players are choosing what to do
+        //playerTurnCanvas.SetActive(true);
+
         for(int i=0; i<players.Count; i++){
             players[i].ResetPlayerDecision();
         }
@@ -91,7 +107,6 @@ public class PlayersManager : MonoBehaviour
             //reset the player decisions at the start of their turn, resetting the animations too if they haven't lost or might card
             ResetPlayersDecisions();
 
-            GameManager.Instance.StartPlayerTurn();
         }else{
             Debug.Log("Start DealerTurn");
             GameManager.Instance.StartDealerTurn();
@@ -126,7 +141,7 @@ public class PlayersManager : MonoBehaviour
         List<Player> playersWhoWon = new List<Player>();
 
         for(int i = 0; i < players.Count; i++){
-            //TODO check case when dealer has same points as player, that case is a draw...
+            //TODO check case when dealer has same points as player, that case is a draw... For now it's a win for the player
 
 
             if((players[i].GetCardSum() >= dealerValue || dealerValue>21) && !players[i].lost){
@@ -143,6 +158,20 @@ public class PlayersManager : MonoBehaviour
             GameManager.Instance.PlayersWon(playersWhoWon);
         }else{
             GameManager.Instance.DealerWon();
+        }
+    }
+
+    //activate all the player canvases showing their stats. They will be visible only on mouse hover
+    public void ShowPlayerStats(){
+        for(int i=0; i < numberOfPlayers; i++){
+            players[i].showStats = true;
+        }
+    }
+
+    //remove the player canvases showing their stats
+    public void RemovePlayerStats(){
+        for(int i=0; i < numberOfPlayers; i++){
+            players[i].showStats = false;
         }
     }
 }

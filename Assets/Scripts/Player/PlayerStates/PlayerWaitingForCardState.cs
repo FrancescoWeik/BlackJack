@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerWaitingForCardState : PlayerState
 {   
 
-    public PlayerWaitingForCardState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerWaitingForCardState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
     }
@@ -13,6 +13,7 @@ public class PlayerWaitingForCardState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetCurrentStateCanvas("Waiting card state");
 
         player.askingForCard = true;
     }

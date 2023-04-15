@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerDecisionState : PlayerState
 {
     int number;
-    public PlayerDecisionState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerDecisionState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData,  animBoolName)
     {
 
     }
@@ -15,6 +15,7 @@ public class PlayerDecisionState : PlayerState
         base.Enter();
 
         number = Random.Range(0,10);
+        player.SetCurrentStateCanvas("Decision state");
     }
 
     public override void Exit()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWinState : PlayerState
 {
-    public PlayerWinState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
+    public PlayerWinState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
     }
@@ -12,11 +12,16 @@ public class PlayerWinState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetCurrentStateCanvas("Win state");
+
+        PlayClappingSound();
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        player.StopSound();
     }
 
     public override void LogicUpdate()
@@ -25,5 +30,10 @@ public class PlayerWinState : PlayerState
 
         //just play the win animation
 
+    }
+
+    private void PlayClappingSound(){
+        //play player clap hands sound
+        player.PlaySound(playerData.winSound);
     }
 }
