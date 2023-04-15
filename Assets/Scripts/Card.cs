@@ -17,8 +17,17 @@ public class Card
             case 3: suitChar = '♠'; break;
             default: break;
         }
-        
-        this.value = value;
+
+        //in blackjack the figures value is 10.
+        switch(value){
+            case 1: this.value = 11; break; //the ace value is 11 unless the player busts.
+            case 13:
+            case 12:
+            case 11: this.value = 10; break;
+            default: this.value = value; break;
+        }
+
+        //this.value = value;
         this.material = cardMesh;
     }
 

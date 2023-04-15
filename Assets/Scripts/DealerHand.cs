@@ -7,6 +7,7 @@ public class DealerHand : MonoBehaviour
 {
     public List<CardObject> cardObjectList; //list of the cards that the dealer has
     private int cardSum; //sum of the cards
+    private int numberOfAces; //number of aces held by the dealer
     private int numberOfCards; //number of cards held by the dealer
 
     public int maxPointsNumber;
@@ -19,6 +20,8 @@ public class DealerHand : MonoBehaviour
 
     private void Start(){
         numberOfCards = 0;
+        numberOfAces = 0;
+        cardSum = 0;
     }
 
 
@@ -71,13 +74,16 @@ public class DealerHand : MonoBehaviour
 
     public void UpdateCardSum(int value){
         cardSum = cardSum + value;
-        cardSumText.text = cardSum.ToString();
         numberOfCards++;
+
+        if(value == 11){
+            //it's an ace
+            numberOfAces ++;
+        }
 
         //Check if exceeding max blackjack number
         if(cardSum>21){
-            Debug.Log("Exceeds for dealer");
-            GameManager.Instance.EndGame();
+            CheckIfLost();
         }
         else if(cardSum == 21 && numberOfCards == 2){
             //it's a blackjack so end the game
@@ -87,6 +93,32 @@ public class DealerHand : MonoBehaviour
             //Start the player turn if a card has been drawn
             //PlayersManager.Instance.StartPlayerTurn();
             GameManager.Instance.StartPlayerTurn();
+        }
+
+        cardSumText.text = cardSum.ToString();
+    }
+
+    //Check if the dealer lost, before doing so check if he has aces, if he does then check if dealer loses even if the ace value is 1
+    public void CheckIfLost(){
+        if(cardSum>21){
+            if(CheckAces()){
+                cardSum = cardSum - 10; //give the ace a value of 1
+                numberOfAces --;
+                CheckIfLost(); //Check again if lost anyway, I think it's impossible though
+            }else{
+                GameManager.Instance.EndGame();
+                return;
+            }
+        }else{
+            GameManager.Instance.StartPlayerTurn();
+        }
+    }
+
+    public bool CheckAces(){
+        if(numberOfAces > 0){
+            return true;
+        }else{
+            return false;
         }
     }
     

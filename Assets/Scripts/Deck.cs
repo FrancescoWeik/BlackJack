@@ -153,7 +153,7 @@ public class Deck : MonoBehaviour
         //i = 2 because deck has the half deck and the full deck as first children.
         for(int i = numberOfChilds; i < childListLength; i++){
             
-            Debug.Log(i);
+            //Debug.Log(i);
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
             char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
             Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();

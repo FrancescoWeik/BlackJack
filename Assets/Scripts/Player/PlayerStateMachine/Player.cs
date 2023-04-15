@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public List<CardObject> cardObjectList; //list of the cards that the player has while playing, maybe I can take a reference only to the value
     public int numberOfCards; //keep the numbher of the card drawn by the player
     private int cardSum;
+    private int numberOfAces; //keep track to wheter or not player has aces
 
     public int stopAskingAtPoints = 20; //above 20 points the player won't ask for more cards
     public int askingPercentage = 7; //percentage out of ten, so with 7 is 70%
@@ -95,6 +96,7 @@ public class Player : MonoBehaviour
         cardObjectList = new List<CardObject>();
         cardLayerNumber = Mathf.RoundToInt(Mathf.Log(whatIsCard.value, 2));
         cardSum = 0;
+        numberOfAces = 0;
 
         currentXOffset = 0;
 
@@ -202,14 +204,39 @@ public class Player : MonoBehaviour
     }
 
     public void UpdateCardSum(int value){
+        //check if it's an ace
+        if(value == 11){
+            numberOfAces ++;
+        }
+
         numberOfCards++;
 
         cardSum = cardSum + value;
 
-        cardSumText.text = cardSum.ToString();
+        CheckIfLost();
 
+        cardSumText.text = cardSum.ToString();
+    }
+
+    //Check if the player lost, before doing so check if he has aces, if he does then check if player loses even if the ace value is 1
+    public void CheckIfLost(){
         if(cardSum>21){
-            lost = true;
+            if(CheckAces()){
+                cardSum = cardSum - 10; //give the ace a value of 1
+                numberOfAces --;
+                CheckIfLost(); //Check again if lost anyway, I think it's impossible though
+            }else{
+                lost = true;
+                return;
+            }
+        }
+    }
+
+    public bool CheckAces(){
+        if(numberOfAces > 0){
+            return true;
+        }else{
+            return false;
         }
     }
 
