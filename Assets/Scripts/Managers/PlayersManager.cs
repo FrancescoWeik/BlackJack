@@ -138,7 +138,7 @@ public class PlayersManager : MonoBehaviour
 
     //Check which players won based on their card value. Receives the dealer card sum value as a parameter.
     public void CheckPlayerWin(int dealerValue){
-        List<Player> playersWhoWon = new List<Player>();
+        List<string> playersWhoWon = new List<string>();
 
         for(int i = 0; i < players.Count; i++){
             //TODO check case when dealer has same points as player, that case is a draw... For now it's a win for the player
@@ -147,7 +147,7 @@ public class PlayersManager : MonoBehaviour
             if((players[i].GetCardSum() >= dealerValue || dealerValue>21) && !players[i].lost){
                 players[i].ChangeToWinState();
                 Debug.Log("CHANGING TO WIN");
-                playersWhoWon.Add(players[i]);
+                playersWhoWon.Add(players[i].GetName());
             }else{
                 Debug.Log("Changee to lsot state");
                 players[i].ChangeToLostState();

@@ -241,6 +241,10 @@ public class Player : MonoBehaviour
         SetPercentageCanvas(percentage);
     }
 
+    public string GetName(){
+        return playerName;
+    }
+
     #region Canvas Stats
 
     public void SetPercentageCanvas(int percentage){

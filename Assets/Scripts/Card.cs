@@ -17,7 +17,7 @@ public class Card
             case 3: suitChar = '♠'; break;
             default: break;
         }
-
+        
         this.value = value;
         this.material = cardMesh;
     }
