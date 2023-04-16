@@ -126,9 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4a8910f2f53e44aae2fd6d982ecf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 8.38
-  turnSpeed: 8
+  forceMultiplier: 10
   yOffset: 0.2
+  turnSpeed: 8
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 128
@@ -136,7 +136,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   cardData: {fileID: 11400000, guid: 240b2aa0ac1b1c44081dfda2faecfb3c, type: 2}
-  cubedraw: {fileID: 3292850364531045544, guid: af2d7f563ccab7f40b6eebc35e5558bf, type: 3}
 --- !u!82 &-5837382812218932534
 AudioSource:
   m_ObjectHideFlags: 0

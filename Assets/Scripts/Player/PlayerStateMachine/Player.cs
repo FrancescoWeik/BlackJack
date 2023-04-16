@@ -36,13 +36,11 @@ public class Player : MonoBehaviour
     public bool lost; //keep track if a player lost the game
     public bool rejectCards; //keep track if a player rejects cards
 
-    private string currentAnim;
-
     public Transform cardPosition; //used to place the cards on the table
     public float cardXOffset; //offset for the x position for each card that is given to the player
     private float currentXOffset; //current offset to apply to the card position
 
-    public bool showStats;
+    public bool showStats; //variable used to decide whether or not to show stats of the player
 
     #region State variables
 
@@ -60,11 +58,13 @@ public class Player : MonoBehaviour
     #region UI
 
     public Text cardSumText;
+
     [SerializeField] private Text playerNameText;
     [SerializeField] private GameObject statsCanvas;
     [SerializeField] private Text statsPlayerName;
     [SerializeField] private Text statsDrawPercentage;
     [SerializeField] private Text statsCurrentState;
+    //[SerializeField] private Text statsCards; //text displaying cards held by user
 
     #endregion
 

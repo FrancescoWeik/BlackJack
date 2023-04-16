@@ -57,6 +57,7 @@ public class Deck : MonoBehaviour
 
         //if the deck contains no cards you can't shuffle it
         if(cards.Count == 0){
+            //TODO call function to pick up all the non assigned cards.
             return;
         }
 

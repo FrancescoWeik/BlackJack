@@ -16,7 +16,7 @@ public class PlayerLostState : PlayerState
         player.SetCurrentStateCanvas("Lost state"); 
 
         player.lost = true;
-        //player.PlayOneShotSound(playerData.lostSound); if you want a "screm" sound when losing remove comment
+        //player.PlayOneShotSound(playerData.lostSound); //if you want a "scream" sound when losing remove comment
         player.FinishTurn();
     }
 

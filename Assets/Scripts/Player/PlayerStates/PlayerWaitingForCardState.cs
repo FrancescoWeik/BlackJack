@@ -27,8 +27,6 @@ public class PlayerWaitingForCardState : PlayerState
     {
         base.LogicUpdate(); 
 
-        //Debug.Log("waiting for a card");
-
         if(player.CheckReceivedCard()){
             
             //check if sum exceeds, it it does then change to lose

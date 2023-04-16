@@ -11,12 +11,10 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Color normalColor;
 
     public void OnPointerEnter(PointerEventData eventData){
-        //Debug.Log("Hover on button");
         ChangeTextColor(onHoverColor);
     }
 
     public void OnPointerExit(PointerEventData eventData){
-        //Debug.Log("Hover eexit button");
         ChangeTextColor(normalColor);
     }
 
