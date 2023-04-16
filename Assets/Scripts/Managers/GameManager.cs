@@ -97,8 +97,14 @@ public class GameManager : MonoBehaviour
     }
 
     //function handling the case where the players won, it displays the canvas
-    public void PlayersWon(List<string> playerList){
+    public void PlayersWon(List<string> playerList, bool isDraw){
         string textWinner = "Winners:\n";  
+
+        //dealer and player win if draw
+        if(isDraw){
+            textWinner =  textWinner + "- Dealer" + "\n";
+        }
+
         for(int i = 0; i < playerList.Count; i++){
             textWinner = textWinner + "- " + playerList[i].ToString() + "\n";
         }

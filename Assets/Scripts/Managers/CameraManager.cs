@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public GameObject personPerspectiveCamera;
-    public GameObject standardCamera;
+    public GameObject personPerspectiveCameraGO;
+    public GameObject standardCameraGO;
+
+    public Camera standardCamera;
+    public Camera personPerspectiveCamera;
+
+    public GameObject worldButtonCanvas; //need to reference it because it has to change camera to keep working in both perspectives
 
     private bool isPerspective;
 
@@ -17,13 +22,15 @@ public class CameraManager : MonoBehaviour
     {  
         if(Input.GetKeyDown(KeyCode.C)){
             if(isPerspective){
-                standardCamera.SetActive(true);
-                personPerspectiveCamera.SetActive(false);
+                standardCameraGO.SetActive(true);
+                personPerspectiveCameraGO.SetActive(false);
                 isPerspective = false;
+                worldButtonCanvas.GetComponent<Canvas>().worldCamera = standardCamera;
             }else{
-                personPerspectiveCamera.SetActive(true);
-                standardCamera.SetActive(false);
+                personPerspectiveCameraGO.SetActive(true);
+                standardCameraGO.SetActive(false);
                 isPerspective = true;
+                worldButtonCanvas.GetComponent<Canvas>().worldCamera = personPerspectiveCamera;
             }
         }
     }
