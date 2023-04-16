@@ -21,6 +21,11 @@ public class CardObject : ThrowableObject
 
     private bool assigned; //track whether or not the card has been assigned
 
+    Vector3 onTablePosition; //assigned when card is assigned to player
+    Quaternion onTableRotation; //assigned when card is assigned to player
+    private bool inFrontOfCamera = false;
+
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -72,6 +77,21 @@ public class CardObject : ThrowableObject
     protected override void OnMouseDown(){
         base.OnMouseDown();
 
+        
+        //if card is assigned then when clicked show it in front of the player(?)
+        if(assigned){
+            //save table position
+            onTablePosition = transform.position;
+            onTableRotation = transform.rotation;
+
+            //put card in front of camera
+            transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2f;
+            Quaternion cardRotation = transform.rotation;
+            cardRotation.eulerAngles = new Vector3(-90, Camera.main.transform.rotation.eulerAngles.y, 0);
+            transform.rotation = cardRotation;
+            inFrontOfCamera = true;
+        }
+
         if(checkAlreadyInitialized()){
                 //do not reinitialize card, do nothing
         }else{
@@ -82,6 +102,14 @@ public class CardObject : ThrowableObject
 
     //Called when releasing the card, check if hitting a player or the dealer field, if you are then assign the card, else throw the card
     protected override void OnMouseUp(){
+
+        if(inFrontOfCamera){
+            //position card back on the table
+            transform.position = onTablePosition;
+            transform.rotation = onTableRotation;
+            inFrontOfCamera = false;
+        }
+
         if(isInteractable){
             isDragging = false;
             rb.freezeRotation = false;

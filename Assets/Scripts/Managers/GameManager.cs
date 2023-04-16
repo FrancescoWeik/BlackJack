@@ -79,6 +79,9 @@ public class GameManager : MonoBehaviour
 
     //handle logic for when someone won the game
     public void EndGame(){
+        //Flip the second card of the dealer at the end of the game if it isn't already flipped
+        dealer.FlipCard();
+
         if(PlayersManager.Instance.CheckAllPlayersLost()){
             //Dealer Won
             DealerWon();

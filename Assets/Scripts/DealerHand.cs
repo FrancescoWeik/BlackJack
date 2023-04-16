@@ -7,6 +7,7 @@ public class DealerHand : MonoBehaviour
 {
     public List<CardObject> cardObjectList; //list of the cards that the dealer has
     private int cardSum; //sum of the cards
+    private int shownCardSum; //sum of the cards of the dealer with the exceeption of the second one (the second card dealt is not shown in blackjack)
     private int numberOfAces; //number of aces held by the dealer
     private int numberOfCards; //number of cards held by the dealer
 
@@ -17,6 +18,8 @@ public class DealerHand : MonoBehaviour
     private float currentXOffset;
 
     public Text cardSumText;
+
+    //public bool ShowAllCards; //set by the programmer
 
     private void Start(){
         numberOfCards = 0;
@@ -34,16 +37,24 @@ public class DealerHand : MonoBehaviour
 
             cardObject.SetVelocity(Vector3.zero);
 
-            //Send card on the table in front of dealer faced up
-            cardGO.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
-            cardGO.transform.rotation = cardPosition.rotation;
-
             //deActivate the card so that the player can't pick it up again
             cardObject.RemoveInteraction();
 
-            currentXOffset = currentXOffset + cardXOffset;
-
             UpdateCardSum(cardObject.GetValue());
+
+            //Send card on the table in front of dealer faced up
+            cardGO.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
+            //cardGO.transform.rotation = cardPosition.rotation;
+            
+            if(numberOfCards == 2){
+                Quaternion cardRotation = cardPosition.rotation;
+                cardRotation.eulerAngles = new Vector3(cardRotation.eulerAngles.x, cardRotation.eulerAngles.y, 180);
+                cardGO.transform.rotation = cardRotation;
+            }else{
+                cardGO.transform.rotation = cardPosition.rotation;
+            }
+
+            currentXOffset = currentXOffset + cardXOffset;
         }
     }
 
@@ -74,13 +85,15 @@ public class DealerHand : MonoBehaviour
         cardSum = cardSum + value;
         numberOfCards++;
 
+        UpdateShownCardSum(value);
+
         if(value == 11){
             //it's an ace
             numberOfAces ++;
         }
 
         //Check if exceeding max blackjack number
-        if(cardSum>maxPointsNumber){
+        if(cardSum>21){
             CheckIfLost();
         }
         else if(cardSum == 21 && numberOfCards == 2){
@@ -95,9 +108,34 @@ public class DealerHand : MonoBehaviour
         cardSumText.text = cardSum.ToString();
     }
 
+    //function used to update the value shown to the user
+    private void UpdateShownCardSum(int value){
+        //the second card that the dealer deals to himself is not shown
+        if(numberOfCards == 2){
+            //Do nothing
+        }else if(numberOfCards==3){
+            //at the end on the third round all the cards are shown
+            shownCardSum = cardSum;
+
+            //Display second card
+            FlipCard();
+
+        }else{
+            //else add the value to the shown card (first turn)
+            shownCardSum = shownCardSum + value;
+        }
+    }
+
+    //rotate the second card faced up
+    public void FlipCard(){ 
+        Quaternion cardRotation = cardObjectList[1].gameObject.transform.rotation;
+        cardRotation.eulerAngles = new Vector3(cardRotation.eulerAngles.x, cardRotation.eulerAngles.y, 0);
+        cardObjectList[1].gameObject.transform.rotation = cardRotation;
+    }
+
     //Check if the dealer lost, before doing so check if he has aces, if he does then check if dealer loses even if the ace value is 1
     public void CheckIfLost(){
-        if(cardSum>maxPointsNumber){
+        if(cardSum>21){
             if(CheckAces()){
                 cardSum = cardSum - 10; //give the ace a value of 1
                 numberOfAces --;
@@ -124,9 +162,15 @@ public class DealerHand : MonoBehaviour
         return cardSum;
     }
 
+    public int GetDealerShownCardSum(){
+        return shownCardSum;
+    }
+
     public void ResetToStart(){
+        cardObjectList = new List<CardObject>();
         currentXOffset = 0;
         cardSum = 0;
+        shownCardSum = 0;
         numberOfAces = 0;
         numberOfCards = 0;
         cardSumText.text = cardSum.ToString();

@@ -40,9 +40,10 @@ public class PlayerDecisionState : PlayerState
         }*/
 
         //if the playeer score is less than the dealer and the dealer cannot draw anymore, the player has to draw otherwise he will lose for sure.
-        if(player.GetCardSum() < player.dealerHand.GetDealerCardSum() && (player.dealerHand.GetDealerCardSum()<21 && player.dealerHand.GetDealerCardSum()>17)){
+        if(player.GetCardSum() < player.dealerHand.GetDealerShownCardSum() && (player.dealerHand.GetDealerCardSum()<21 && player.dealerHand.GetDealerShownCardSum()>17)){
             stateMachine.ChangeState(player.waitingForCardState);
-        }else if(number > player.askingPercentage || player.ExceedMaxAskingPoints()){
+        }
+        else if(number > player.askingPercentage || player.ExceedMaxAskingPoints()){
             //Do Not Ask For Card
             player.askingForCard = false;
             player.decidedWhatToDo = true;
@@ -53,13 +54,15 @@ public class PlayerDecisionState : PlayerState
             }else{  
                 if(player.numberOfCards>=2){
                     stateMachine.ChangeState(player.rejectCardState);
-                }else{
+                }
+                //player must draw if he has less than 2 cards.
+                else{
                     stateMachine.ChangeState(player.waitingForCardState);
                 }
             }
         }else{
             //check if dealer has 17 or more, if player already has more than the dealer then do not ask cards
-            if(player.dealerHand.GetDealerCardSum() >= 17 && player.GetCardSum() >17){
+            if(player.dealerHand.GetDealerShownCardSum() >= 17 && player.GetCardSum() > 17){
                 player.decidedWhatToDo = false;
                 player.askingForCard = false;
                 stateMachine.ChangeState(player.rejectCardState);
