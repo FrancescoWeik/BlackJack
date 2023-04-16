@@ -57,8 +57,9 @@ public class Deck : MonoBehaviour
 
         //if the deck contains no cards you can't shuffle it
         if(cards.Count == 0){
-            //TODO call function to pick up all the non assigned cards.
-            return;
+            
+            //if there are no cards in the deck then shuffle the ones that haven't been assigned to players
+            PickUpNonAssignedCards();
         }
 
         //Set the meshes and the last card to false so that you can play the animation
@@ -160,6 +161,25 @@ public class Deck : MonoBehaviour
         }
         
 
+    }
+
+    //get all the cards that haven't been assigned to a player or to the dealer and delete them. Then add them back to the deck
+    public void PickUpNonAssignedCards(){
+        int childListLength = transform.childCount;
+        for(int i = numberOfChilds; i < childListLength; i++){
+            if(!transform.GetChild(i).gameObject.GetComponent<CardObject>().GetAssigned()){
+                int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
+                char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
+                Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();
+                Card bottomCard = new Card(bottomCardSuit, bottomCardValue, bottomCardMaterial);
+                
+                //insert card at the bottom of the list
+                cards.Insert(0,bottomCard);
+
+                Destroy(transform.GetChild(i).gameObject);
+                Debug.Log(i);
+            }
+        }
     }
 
     //called by the DeckShuffleAnimation, set the fulldeck mesh and the last card to active

@@ -28,6 +28,7 @@ public class DealerHand : MonoBehaviour
     public void AssignCard(GameObject cardGO){
         if(cardSum<maxPointsNumber){
             CardObject cardObject = cardGO.GetComponent<CardObject>();
+            cardObject.SetAssigned();
 
             cardObjectList.Add(cardObject);
 

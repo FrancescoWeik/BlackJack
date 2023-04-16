@@ -19,6 +19,8 @@ public class CardObject : ThrowableObject
 
     [SerializeField] private CardData cardData; //scriptable object containing some variables
 
+    private bool assigned; //track whether or not the card has been assigned
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -29,6 +31,7 @@ public class CardObject : ThrowableObject
         //Debug.Log(meshRenderer);
         alreadyInitialized = false;
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
+        assigned = false;
     }
 
     public int GetValue(){
@@ -139,6 +142,22 @@ public class CardObject : ThrowableObject
 
     protected override void PlaySound(AudioClip audio){
         base.PlaySound(audio);
+    }
+
+    public void SetAssigned(){
+        assigned = true;
+
+        //call function after some seconds
+        Invoke("RemoveRigidBody", 0.5f);
+    }
+
+    //make the card rigidbody kinematic so that other cards cannot push it
+    private void RemoveRigidBody(){
+        rb.isKinematic = true;
+    }
+
+    public bool GetAssigned(){
+        return assigned;
     }
 
 }

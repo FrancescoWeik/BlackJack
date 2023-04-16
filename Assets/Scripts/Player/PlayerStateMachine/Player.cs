@@ -181,6 +181,7 @@ public class Player : MonoBehaviour
     //Add the card to the player and remove the forces to that card in order to position it on the table
     public void AddCardToPlayerHand(GameObject CardGameObject){
         CardObject cardObject = CardGameObject.GetComponent<CardObject>();
+        cardObject.SetAssigned();
 
         //Add card object to the list of the cards of the player 
         cardObjectList.Add(cardObject);

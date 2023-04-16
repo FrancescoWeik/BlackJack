@@ -26,10 +26,10 @@ public class PlayerWaitingForCardState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate(); 
-
+        
         if(player.CheckReceivedCard()){
             
-            //check if sum exceeds, it it does then change to lose
+            //check if sum exceeds, if it does then change to lose
             if(player.GetCardSum() > player.maxBlackJack){
                 stateMachine.ChangeState(player.loseState);
             }else{
