@@ -39,21 +39,15 @@ public class GameManager : MonoBehaviour
     public void Update(){
         if(Input.GetKey(KeyCode.Escape)){
             //Open menu
-            //Time.timeScale = 0;
             PauseGame();
         }
     }
 
     public void StartDealerTurn(){
         isPlayerTurn = false;
-        //Debug.Log("Dealer Turn");
 
         //if all player exceeds 21 then you the dealer doesn't draw and wins
         if(PlayersManager.Instance.CheckAllPlayersLost()){
-            /*
-                not sure about this one because I can't find rules regarding this special case.
-                if all players exceed 21 does the dealer still have to draw?
-            */
             EndGame();
         }else{
              //if dealer cannot draw then go back to player turn.
@@ -91,7 +85,6 @@ public class GameManager : MonoBehaviour
 
         }else{
             //Players won, which ones?
-            //Debug.Log("Player Might have won");
             int dealerValue = dealer.GetDealerCardSum();
             PlayersManager.Instance.CheckPlayerWin(dealerValue);
         }
@@ -115,9 +108,7 @@ public class GameManager : MonoBehaviour
 
     //immediately start a new round when one finishes.
     public void StartNextRound(){
-        Debug.Log("Starting next round");
-
-        //TODO Play deck shuffle animation
+        //You can add an animation here at the start of each round. I decided not to so that the game feels faster
 
         //Get All cards and put them at the bottom of the deck
         deck.PutCardsAtBottom();
@@ -140,14 +131,12 @@ public class GameManager : MonoBehaviour
     }
     
     public void QuitToMenu(){
-        //Debug.Log("Quit Game");
-        //Application.Quit();
         Time.timeScale = 1f;
         LevelManager.Instance.LoadScene("MenuScene"); 
     }
 
     public void PauseGame(){
-        //open pause game menu\
+        //open pause game menu
         pauseButton.SetActive(false);
         pauseMenuScreen.SetActive(true);
 

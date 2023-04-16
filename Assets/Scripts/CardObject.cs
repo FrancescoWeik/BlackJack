@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardObject : MonoBehaviour
+public class CardObject : ThrowableObject
 {
-    private Rigidbody rb;
-
     private int value;
     private char suitChar;
     private MeshRenderer meshRenderer;
@@ -14,50 +12,22 @@ public class CardObject : MonoBehaviour
     private bool alreadyInitialized;
     private Deck deck;
 
-    //mouse coordinates
-    private Vector3 mOffset;
-    private float mZCoord;
-
-    Vector3 startPosition; //used to know where to throw the card
-    Vector3 lastPosition; //last position before releasing the card
-    public float forceMultiplier = 10f;
     public float turnSpeed = 10f;
-    public float yOffset = 0.2f;
-
-    private bool isInteractable; 
 
     public LayerMask whatIsPlayer;
     public LayerMask whatIsDealer;
 
-    private AudioSource audioSource;
-
     [SerializeField] private CardData cardData; //scriptable object containing some variables
 
-    private bool isDragging;
-
-    private Vector3 startMousePosition;
-
-    public void FixedUpdate(){
-        if(isDragging){
-
-            startPosition = transform.position;
-            startMousePosition = Camera.main.WorldToScreenPoint(startPosition);
-
-            Vector3 newPosition = GetMouseWorldPos() + mOffset;
-            rb.MovePosition(newPosition);
-        }
-    }
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        base.Start();
+
         meshRenderer = GetComponent<MeshRenderer>();
-        audioSource = GetComponent<AudioSource>();
 
         //Debug.Log(meshRenderer);
         alreadyInitialized = false;
-        isInteractable = true;
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
     }
 
@@ -96,47 +66,19 @@ public class CardObject : MonoBehaviour
     }
 
     //When a card is clicked check if it has been initialized, if not then initialize it
-    public void OnMouseDown(){
-        if(isInteractable){
-            isDragging = true;
-            //freeze card rotation
-            rb.freezeRotation = true;
-            rb.useGravity = false;
+    protected override void OnMouseDown(){
+        base.OnMouseDown();
 
-            rb.detectCollisions = true;
-            
-            mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
-            mOffset = transform.position - GetMouseWorldPos();
-
-            startPosition = transform.position;
-
-            if(checkAlreadyInitialized()){
+        if(checkAlreadyInitialized()){
                 //do not reinitialize card, do nothing
-                //Debug.Log("Already Initialized");
-            }else{
-                alreadyInitialized = true;
-                deck.InitializeCard(this);
-                //Debug.Log("initialized Card");
-            }
+        }else{
+            alreadyInitialized = true;
+            deck.InitializeCard(this);
         }
     }
-    
-    //this is called every frame update if the gameobject is being dragged
-    /*public void OnMouseDrag(){
-        if(isInteractable){
 
-            //before updating position, save it in the variable
-            startPosition = transform.position;
-
-            //update the position
-            transform.position = GetMouseWorldPos() + mOffset;
-
-        }
-
-        //TODO Check if you are standing in a point for too long, if you are then reset the startPosition
-    }*/
-
-    public void OnMouseUp(){
+    //Called when releasing the card, check if hitting a player or the dealer field, if you are then assign the card, else throw the card
+    protected override void OnMouseUp(){
         if(isInteractable){
             isDragging = false;
             rb.freezeRotation = false;
@@ -158,7 +100,6 @@ public class CardObject : MonoBehaviour
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, whatIsDealer)){
                 //assign card to dealer if possible
-                //Debug.Log(hit.collider.gameObject);
                 if(hit.collider.gameObject.GetComponent<DealerHand>().CheckAssignCard()){
                     PlaySound(cardData.flipCardSound);
                     hit.collider.gameObject.GetComponent<DealerHand>().AssignCard(gameObject);
@@ -173,93 +114,31 @@ public class CardObject : MonoBehaviour
         }
     }
 
-    private Vector3 GetMouseWorldPos(){
-
-        //pixel coordinates
-        Vector3 mousePoint = Input.mousePosition;
-
-        //z coordinate of game object on screen
-        mousePoint.z = mZCoord;
-
-        return Camera.main.ScreenToWorldPoint(mousePoint);
+    protected override Vector3 GetMouseWorldPos(){
+        return base.GetMouseWorldPos();
     }
 
     //Throw the card based on the y and x position of the mouse. The y corresponds to the z during the throw, while the y of the card during the throw is fixed.
-    private void Throw(){
+    protected override void Throw(){
+
         //play sound
         PlaySound(cardData.throwCardSound);
 
-        //calculate direction
-        /*
-        lastPosition = transform.position;
-        Vector3 directionXY = (lastPosition - startPosition).normalized;
-        Vector3 directionXZ;
-
-        Debug.Log(lastPosition);
-        Debug.Log(directionXY);
-        //Only throw the card in the x and z directions. The y is fixed here to 0 or yOffset.
-        if(directionXY.y <= 0){
-            directionXZ = new Vector3(directionXY.x, 0, 0);
-        }else{
-            directionXZ = new Vector3(directionXY.x, yOffset, directionXY.y);
-        }
-        Debug.DrawLine (startPosition, startPosition + directionXZ * 10, Color.red, Mathf.Infinity);
-
-        //apply force in the direction
-        //rb.AddForce(directionXZ * 11f,ForceMode.Impulse);
-        rb.velocity = directionXZ * forceMultiplier * 100 * Time.deltaTime;
-        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
-        */
-
-        //get the last mouse position
-        Vector3 lastMousePosition = Camera.main.WorldToScreenPoint(transform.position);
-
-        //get the difference between the previous mouse position and the current one
-        float mouseXMovement = lastMousePosition.x - startMousePosition.x;
-        float mouseYMovement = lastMousePosition.y - startMousePosition.y;
-
-        Vector3 newPositionZ;
-        Vector3 newPositionX;
-
-        Vector3 newPositionZNoY;
-        Vector3 newPositionXNoY;
-
-        //if the mouse movement is 0 then do not throw the card in the x direction
-        if(mouseXMovement == 0){
-            newPositionXNoY = new Vector3(0,0,0);
-        }else{
-            //calculate the x direction with respect to the camera rotation
-            newPositionX = transform.position + (Camera.main.transform.right * mouseXMovement);
-            newPositionXNoY = new Vector3(newPositionX.x, yOffset, newPositionX.z);
-        }
-        //if the mouse movement is 0 or less then do not throw the card in the z direction (we are converting the y mouse position to the z direction)
-        if(mouseYMovement <=0){
-            newPositionZNoY = new Vector3(0,0,0);
-        }else{
-            //calculate the z direction with respect to the camera rotation
-            newPositionZ = transform.position + (Camera.main.transform.forward * mouseYMovement);
-            newPositionZNoY = new Vector3(newPositionZ.x, yOffset, newPositionZ.z);
-        }
-
-        //find the result vector of the previous 2
-        Vector3 movementVector = (newPositionZNoY + newPositionXNoY).normalized;
-
-        //apply velocity in the direction of the vector.
-        rb.velocity = movementVector * forceMultiplier * 100 * Time.deltaTime;
-        rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
+        base.Throw();
 
     }
 
-    public void SetVelocity(Vector3 velocity){
-        rb.velocity = velocity;
+    public override void SetVelocity(Vector3 velocity){
+        base.SetVelocity(velocity);
     }
 
-    public void RemoveInteraction(){
-        isInteractable = false;
+    //user cannot interact with the card anymore (it's either on a player hand or on the dealer field)
+    public override void RemoveInteraction(){
+        base.RemoveInteraction();
     }
 
-    private void PlaySound(AudioClip audio){
-        audioSource.PlayOneShot(audio);
+    protected override void PlaySound(AudioClip audio){
+        base.PlaySound(audio);
     }
 
 }

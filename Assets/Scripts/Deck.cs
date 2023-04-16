@@ -11,7 +11,7 @@ public class Deck : MonoBehaviour
     private List<Card> cards;
     [SerializeField] private List<GameObject> cardsPrefabs; //card prefabs, ordered
 
-    [SerializeField] private float drawCardOffsetY = 1.35f;
+    [SerializeField] private float drawCardOffsetY = 1.35f; //offset needed to position the cards in the right position
 
     [SerializeField] private LayerMask whatIsCard;
     [SerializeField] private GameObject simpleCard; //prefab of an empty car
@@ -20,28 +20,22 @@ public class Deck : MonoBehaviour
     [SerializeField] private GameObject halfDeck; //the half deck mesh
     [SerializeField] private GameObject shuffleDeckMesh; //the gameobject used for the shuffle animation
     [SerializeField] private int halfDeckThreshold; //number of cards to have to change mesh to half deck
-    private bool shuffling;
+    private bool shuffling; //while shuffling you can't draw
 
     public int numberOfChilds; //the number of the child of the deck gameobject, it's useful to know in order to perform animations and shuffling.
 
-    //private Collider col;
-
     private void Start(){
-        //meshRenderer = GetComponent<MeshRenderer>();
-        //col = GetComponent<Collider>();
-
         InitializeDeck();
         shuffling = false;
     }
 
     private void Update(){
         if(!CheckCard()){
-            //Debug.Log("Card missing");
             if(!shuffling){
                 CreateEmptyCard();
             }
         }else{
-            //Debug.Log("Card on deck");
+            //Do nothing
         }
     }
 
@@ -63,10 +57,11 @@ public class Deck : MonoBehaviour
 
         //if the deck contains no cards you can't shuffle it
         if(cards.Count == 0){
+            //TODO call function to pick up all the non assigned cards.
             return;
         }
 
-        //Set the meshes and the last card to false
+        //Set the meshes and the last card to false so that you can play the animation
         halfDeck.SetActive(false);
         fullDeck.SetActive(false);
         transform.GetChild(transform.childCount -1).gameObject.SetActive(false);
@@ -85,24 +80,25 @@ public class Deck : MonoBehaviour
         //printDeck();
     }
 
-    //shoot a raycast on the deck normal to check if there's a card, if there isn't then create one.
+    //shoot a raycast on the deck normal to check whether or not there's a card, if there isn't then create one.
     private bool CheckCard(){
         Ray ray;
         RaycastHit hit;
-        ray = new Ray(transform.position, Vector3.up);     //wallFront = Physics.Raycast(startPosition, orientation.forward, out frontWallHit, detectionLength, whatIsGround);
+        ray = new Ray(transform.position, Vector3.up);
 
-        Debug.DrawRay(transform.position,  Vector3.up, Color.blue);
+        //Debug.DrawRay(transform.position,  Vector3.up, Color.blue);
 
         return Physics.Raycast(ray, out hit, 2f, whatIsCard);
     }
 
-    //create an empty card on top of the deck, it is later initialized when clicked
+    //Create an empty card on top of the deck, it is later initialized when clicked
     private void CreateEmptyCard(){
         if(cards.Count > 0){
             Vector3 instatiatePosition = new Vector3(transform.position.x, transform.position.y + drawCardOffsetY, transform.position.z);
             Quaternion simpleCardRotation = new Quaternion(0, 0, 180, 1);
             Instantiate(simpleCard, instatiatePosition, simpleCardRotation, transform);
             
+            //if we havee only halfDeckThreshold cards then show a smaller deck
             if(cards.Count < halfDeckThreshold){
                 //change to half deck mesh
                 halfDeck.SetActive(true);
@@ -110,10 +106,9 @@ public class Deck : MonoBehaviour
             }
         }
         else{
-            //col.enabled = false;
+            //remove deck because there are no cards left
             fullDeck.SetActive(false);
             halfDeck.SetActive(false);
-            //meshRenderer.enabled = false;
         }
     }
 
@@ -126,17 +121,16 @@ public class Deck : MonoBehaviour
 
     }
 
-    //function called at the end of the round, put all the cards that have been played on the bottom of the deck
+    //function called at the end of the round, put all the cards that have been played at the bottom of the deck
     public void PutCardsAtBottom(){
         /*
             One way to do that is to search all the children of the deck (eexcept the last one) and add their card values to the deck.
+            This can be done only if the cards played are all children of the deck as in this case. 
         */
 
-        //reset deck so that I can see all the deck if it had 0 cards
-        //col.enabled = true;
+        //Show the full deck to the user
         fullDeck.SetActive(true);
         halfDeck.SetActive(false);
-        //meshRenderer.enabled = true;
 
         //Check if I have no card in the deck
         int childListLength;
@@ -145,15 +139,15 @@ public class Deck : MonoBehaviour
             childListLength = transform.childCount;
             Debug.Log("All Cards");
         }else{
-            //childCount -1 becase the last card has not been played and so it has to stay on the top!
+            //childCount -1 because the last card has not been played and so it has to stay on the top!
             childListLength = transform.childCount -1;
             Debug.Log("All Cards minus the top one");
         }
 
-        //i = 2 because deck has the half deck and the full deck as first children.
+        //i = numberOfChilds because the deck has also other children besides the cards, so I have to ignore those.
+        //could have also checked if the child had the CardObject component instead
         for(int i = numberOfChilds; i < childListLength; i++){
             
-            //Debug.Log(i);
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
             char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
             Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();
@@ -168,7 +162,7 @@ public class Deck : MonoBehaviour
 
     }
 
-    //called by the deckShuffleAnimation, set the deck mesh to active
+    //called by the DeckShuffleAnimation, set the fulldeck mesh and the last card to active
     public void FinishShuffleAnim(){
         shuffleDeckMesh.SetActive(false);
         halfDeck.SetActive(false);

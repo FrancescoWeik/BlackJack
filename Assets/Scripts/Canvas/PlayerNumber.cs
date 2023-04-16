@@ -22,8 +22,6 @@ public class PlayerNumber : MonoBehaviour
         Debug.Log("Start game");
         playerNumberScriptable.numberOfPlayer = currentValue; 
         LevelManager.Instance.LoadScene(sceneName);
-        //SceneManager.LoadScene(sceneName);
-        //GameManager.Instance.StartGame(currentValue);
     }
 
     public void IncrementValue(){

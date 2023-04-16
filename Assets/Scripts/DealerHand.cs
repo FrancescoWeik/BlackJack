@@ -24,7 +24,7 @@ public class DealerHand : MonoBehaviour
         cardSum = 0;
     }
 
-
+    //Give card to the dealer
     public void AssignCard(GameObject cardGO){
         if(cardSum<maxPointsNumber){
             CardObject cardObject = cardGO.GetComponent<CardObject>();
@@ -53,9 +53,6 @@ public class DealerHand : MonoBehaviour
             return false;
         }
 
-        //check if player has drawn a card, if he did then you can draw, otherwise you can't
-
-
         //check if points are more or equals to 17, if they are then you can't draw
         if(cardSum>=maxPointsNumber){
             return false;
@@ -82,7 +79,7 @@ public class DealerHand : MonoBehaviour
         }
 
         //Check if exceeding max blackjack number
-        if(cardSum>21){
+        if(cardSum>maxPointsNumber){
             CheckIfLost();
         }
         else if(cardSum == 21 && numberOfCards == 2){
@@ -91,7 +88,6 @@ public class DealerHand : MonoBehaviour
         }
         else{
             //Start the player turn if a card has been drawn
-            //PlayersManager.Instance.StartPlayerTurn();
             GameManager.Instance.StartPlayerTurn();
         }
 
@@ -100,7 +96,7 @@ public class DealerHand : MonoBehaviour
 
     //Check if the dealer lost, before doing so check if he has aces, if he does then check if dealer loses even if the ace value is 1
     public void CheckIfLost(){
-        if(cardSum>21){
+        if(cardSum>maxPointsNumber){
             if(CheckAces()){
                 cardSum = cardSum - 10; //give the ace a value of 1
                 numberOfAces --;
@@ -114,6 +110,7 @@ public class DealerHand : MonoBehaviour
         }
     }
 
+    //Check if dealer has any aces
     public bool CheckAces(){
         if(numberOfAces > 0){
             return true;

@@ -26,11 +26,16 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(LoadSceneRoutine(sceneName));
     }
 
+    //Fade image in and out
     public IEnumerator LoadSceneRoutine(string sceneName){
         transition.SetTrigger("start");
 
         yield return new WaitForSeconds(transitionTime);
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void QuitGame(){
+        Application.Quit();
     }
 }

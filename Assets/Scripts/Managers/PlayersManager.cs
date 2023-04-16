@@ -108,7 +108,6 @@ public class PlayersManager : MonoBehaviour
             ResetPlayersDecisions();
 
         }else{
-            Debug.Log("Start DealerTurn");
             GameManager.Instance.StartDealerTurn();
             //GameManager.Instance.EndGame();
         }
@@ -118,7 +117,6 @@ public class PlayersManager : MonoBehaviour
     public bool CheckPlayersCanPlay(){
         for(int i = 0; i < players.Count; i++){
             if(!players[i].lost && !players[i].rejectCards){
-                Debug.Log(players[i].stateMachine.currentState);
                 return true;
             }
         }
@@ -128,7 +126,6 @@ public class PlayersManager : MonoBehaviour
     //if all players lost return true
     public bool CheckAllPlayersLost(){
         for(int i = 0; i < players.Count; i++){
-            //Debug.Log(players[i].lost);
             if(!players[i].lost){
                 return false;
             }
@@ -143,13 +140,10 @@ public class PlayersManager : MonoBehaviour
         for(int i = 0; i < players.Count; i++){
             //TODO check case when dealer has same points as player, that case is a draw... For now it's a win for the player
 
-
             if((players[i].GetCardSum() >= dealerValue || dealerValue>21) && !players[i].lost){
                 players[i].ChangeToWinState();
-                Debug.Log("CHANGING TO WIN");
                 playersWhoWon.Add(players[i].GetName());
             }else{
-                Debug.Log("Changee to lsot state");
                 players[i].ChangeToLostState();
             }
         }
