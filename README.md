@@ -4,6 +4,7 @@ This is a repository for the BlackJack game. In this game you'll play as the dea
  
 ***Controls***</br>
 - Using the mouse you are able to pick up cards, dragging a card to the player will assign it to that certain player. You can also click on a card, move it and then release the mous click to throw the card.
+- By clicking on an assigned card on the table you can check its suit and value.
 - Clicking c allows you to change the camera view
 - If you are in the dealer perspective view then you can look around using the arrow keys or wasd
 
@@ -19,10 +20,10 @@ The main scripts are:
 
 ***Manager scripts***</br>
 The manager scripts are those that handles the general logic of the game. 
-- ***LevelManager***</br> The level manager handles the loading and transition between the different scenes
-- ***GameManager***</br> The game manager handles the logic of the game. It handles the different turns (player turn and dealer turn), it handles the end of a round and how the game should respond in certain situations.
-- ***PlayerManager***</br> The player manager handles the logic of the different players. It creates the players and then can perform different operations on them.
-- ***CameraManager***</br> The camera manager handles the switch between the different cameras and how they should behave.
+- ***LevelManager***</br> The level manager handles the loading and transition between the different scenes. It is never destroyed between scenes.
+- ***GameManager***</br> The game manager handles the logic of the game. It handles the different turns (player turn and dealer turn), it handles the end of a round and how the game should respond in certain situations. Requires reference to the dealer hand, to the deck and to different UI elements. It also has a field for the PlayerNumberData ScriptableObject that is passed from the menu scene, so that it knows how many players to put in the game.
+- ***PlayerManager***</br> The player manager handles the logic of the different players. It creates the players and then can perform different operations on them. It requires a list of the possible player names, the prefab of the player and the possible players positions around the table.
+- ***CameraManager***</br> The camera manager handles the switch between the different cameras and how they should behave. Requires references to the different type of cameras.
 
 ***Card/Deck scripts***</br>
 - ***Card.cs***</br> A class holding the value, suit and mesh of the cards.
@@ -47,8 +48,21 @@ The manager scripts are those that handles the general logic of the game.
 **Camera scripts**</br>
 - ***DealerPerspectiveCamera.cs***</br> This script handles how the camera moves based on the user inputs. 
 
-***Canvas scripts***,<br>
+***Canvas scripts***</br>
 - The canvas scripts handle the logic of how the ui works and responds to the user clicks.
+
+# Components
+The main components in the scene are:
+- ***Cameras***:</br> has the CameraManager script attached and contains the cameras used inside the game
+- ***GameManager***:</br> A simple GameObject that contains the GameManager script
+- ***PlayersManager***:</br> A simple GameObject that contains the PlayersManager script. 
+- ***LevelManager***:</br> The GameObject containing the levelManager script, has a canvas child that is shown when the game loads a scene.
+- ***ScreenSpaceUI***:</br> A GameObject holding all the UI elements used in the Screen Space UI
+- ***WorldButtonCanvas***:</br> A GameObject holding the world space UI (currently only the shuffle button)
+- ***The Player***:</br> Prefab containing the players GameObject, along with the associated canvas showing their stats. It contains a GameObject called CardPositions GameObject that is usefull to set the card position so that it goes on the table when assigned. 
+- ***The Deck***:</br> Prefab containing the deck GameObject. It contains a GameObject called DeckMesh, one called Black_LittleDeck_00 and one called ShuffleDeckAnim. This GameObject are usefull to handle the visual feedbacks of the deck and giving the user an idea of how many cards are in there. The Deck also always contains a SimpleCard GameObject so that the first card is always already there.
+- ***The Cards***:</br> The cards are simple GameObject containing a rigidbody, a collider, an audio source and the CardObject script. They initially have no card image and are initialized when clicked by calling a function from the deck. Cards are always children of the deck.
+
 
 
 
