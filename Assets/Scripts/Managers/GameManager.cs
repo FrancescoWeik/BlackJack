@@ -68,13 +68,18 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartPlayerTurn(){
-        isPlayerTurn = true;
+        //if a player has a blackjack then the game ends, otherwise continue
+        if(PlayersManager.Instance.CheckPlayersBlackJack()){
+            EndGame();
+        }else{
+            isPlayerTurn = true;
 
-        //disable arrow
-        arrow.SetActive(false);
+            //disable arrow
+            arrow.SetActive(false);
 
-        //start the player turn
-        PlayersManager.Instance.StartPlayerTurn();
+            //start the player turn
+            PlayersManager.Instance.StartPlayerTurn();
+        }
     }
 
     //handle logic for when someone won the game
@@ -82,14 +87,21 @@ public class GameManager : MonoBehaviour
         //Flip the second card of the dealer at the end of the game if it isn't already flipped
         dealer.FlipCard();
 
-        if(PlayersManager.Instance.CheckAllPlayersLost()){
+        //if a player has a blackjack go to the blackjack function checking for a draw
+        if(PlayersManager.Instance.CheckPlayersBlackJack()){
+            int dealerValue = dealer.GetDealerCardSum();
+            PlayersManager.Instance.CheckPlayerWin(dealerValue, true);
+        }
+
+        //otherwise check if a player lost
+        else if(PlayersManager.Instance.CheckAllPlayersLost()){
             //Dealer Won
             DealerWon();
 
         }else{
             //Players won, which ones?
             int dealerValue = dealer.GetDealerCardSum();
-            PlayersManager.Instance.CheckPlayerWin(dealerValue);
+            PlayersManager.Instance.CheckPlayerWin(dealerValue, false);
         }
     }
 
@@ -100,8 +112,18 @@ public class GameManager : MonoBehaviour
     }
 
     //function handling the case where the players won, it displays the canvas
-    public void PlayersWon(List<string> playerList, bool isDraw){
-        string textWinner = "Winners:\n";  
+    public void PlayersWon(List<string> playerList, bool isDraw, bool isBlackJack){
+        //Flip the second card of the dealer at the end of the game if it isn't already flipped
+        dealer.FlipCard();
+
+        string textWinner = "";
+
+        if(isBlackJack){
+            textWinner = "BLACKJACK! \n";
+        }
+
+
+       textWinner = textWinner + "Winners:\n";  
 
         //dealer and player win if draw
         if(isDraw){

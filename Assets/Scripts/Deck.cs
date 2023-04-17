@@ -152,6 +152,12 @@ public class Deck : MonoBehaviour
             int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
             char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
             Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();
+
+            //if the card value is 11 it means that it's an ace, so set it's value to 1
+            if(bottomCardValue == 11){
+                bottomCardValue = 1;
+            }
+
             Card bottomCard = new Card(bottomCardSuit, bottomCardValue, bottomCardMaterial);
 
             //insert card at the bottom of the list
@@ -171,6 +177,12 @@ public class Deck : MonoBehaviour
                 int bottomCardValue = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetValue();
                 char bottomCardSuit = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetSuit();
                 Material bottomCardMaterial = transform.GetChild(i).gameObject.GetComponent<CardObject>().GetMaterial();
+
+                 //if the card value is 11 it means that it's an ace, so set it's value to 1
+                if(bottomCardValue == 11){
+                    bottomCardValue = 1;
+                }
+                
                 Card bottomCard = new Card(bottomCardSuit, bottomCardValue, bottomCardMaterial);
                 
                 //insert card at the bottom of the list

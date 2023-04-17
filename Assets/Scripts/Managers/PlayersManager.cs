@@ -135,8 +135,47 @@ public class PlayersManager : MonoBehaviour
         return true;
     }
 
+    public bool CheckPlayersBlackJack(){
+        for(int i = 0; i < players.Count; i++){
+            if(players[i].blackjack){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //find the player that has a blackjack at first 2 card hand
+    public void CheckPlayersBlackJackWinner(int dealerValue){
+        List<string> playersBlackJackWin = new List<string>();
+        bool draw = false;
+        //check if player has a blackjack
+        for(int i = 0; i < players.Count; i++){
+            if(players[i].blackjack){
+                playersBlackJackWin.Add(players[i].GetName());
+                //if dealer has blackjack too then it's a draw, set to idle, otherwise set to win
+                if(dealerValue == 21){
+                    players[i].ChangeToIdleState();
+                    draw = true;
+                }else{
+                    players[i].ChangeToWinState();
+                }
+            }
+        }
+
+        if(playersBlackJackWin.Count!=0){
+            GameManager.Instance.PlayersWon(playersBlackJackWin, draw, true);
+            return;
+        }
+    }
+
     //Check which players won based on their card value. Receives the dealer card sum value as a parameter.
-    public void CheckPlayerWin(int dealerValue){
+    public void CheckPlayerWin(int dealerValue, bool isBlackjack){
+        if(isBlackjack){
+            CheckPlayersBlackJackWinner(dealerValue);
+            return;
+        }
+
+        //If it is not a blackjack and 
         List<string> playersWhoWon = new List<string>();
         bool draw = false;
 
@@ -159,7 +198,7 @@ public class PlayersManager : MonoBehaviour
         }
 
         if(playersWhoWon.Count > 0 ){
-            GameManager.Instance.PlayersWon(playersWhoWon,draw);
+            GameManager.Instance.PlayersWon(playersWhoWon,draw, false);
         }else{
             GameManager.Instance.DealerWon();
         }

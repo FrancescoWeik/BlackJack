@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     public bool waitingForNextTurn; //have to know if the player has no action to do to handle the start of the player turn in playerManager
     public bool lost; //keep track if a player lost the game
     public bool rejectCards; //keep track if a player rejects cards
+    public bool blackjack; //if player has 21 at first 2 cards hee is guaranteed to win, without a dealer blackjack
 
     public Transform cardPosition; //used to place the cards on the table
     public float cardXOffset; //offset for the x position for each card that is given to the player
@@ -145,6 +146,7 @@ public class Player : MonoBehaviour
         cardObjectList = new List<CardObject>();
         currentXOffset = 0;
         cardSumText.text = cardSum.ToString();
+        blackjack = false;
         stateMachine.ChangeState(waitingForCardState);
     }
 
@@ -208,14 +210,21 @@ public class Player : MonoBehaviour
     }
 
     public void UpdateCardSum(int value){
+        Debug.Log(value);
+
         //check if it's an ace
         if(value == 11){
             numberOfAces ++;
         }
-
+    
         numberOfCards++;
 
         cardSum = cardSum + value;
+
+        //check if player has a blackjack hand
+        if(cardSum == 21 && numberOfCards == 2){
+            blackjack = true;
+        }
 
         CheckIfLost();
 
@@ -319,6 +328,11 @@ public class Player : MonoBehaviour
     //only called from PlayerManager
     public void ChangeToLostState(){
         stateMachine.ChangeState(loseState);
+    }
+
+    //only called from PlayerManager, change to idle if is a blackjack for another player
+    public void ChangeToIdleState(){
+        stateMachine.ChangeState(idleState);
     }
 
     #endregion
