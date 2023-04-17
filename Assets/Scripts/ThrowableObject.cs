@@ -119,7 +119,7 @@ public class ThrowableObject : MonoBehaviour
         Vector3 movementVector = (newPositionZNoY + newPositionXNoY).normalized;
 
         //apply velocity in the direction of the vector.
-        rb.velocity = movementVector * forceMultiplier * 100 * Time.deltaTime;
+        rb.velocity = movementVector * forceMultiplier * 100 * Time.fixedDeltaTime;
         rb.AddTorque(new Vector3(0,10f,0), ForceMode.Impulse);
 
     }
