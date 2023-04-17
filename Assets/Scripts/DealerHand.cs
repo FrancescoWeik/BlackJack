@@ -42,11 +42,11 @@ public class DealerHand : MonoBehaviour
 
             UpdateCardSum(cardObject.GetValue());
 
-            //Send card on the table in front of dealer faced up
+            //Send card on the table in front of dealer
             cardGO.transform.position = new Vector3 (cardPosition.position.x + currentXOffset, cardPosition.position.y, cardPosition.position.z);
-            //cardGO.transform.rotation = cardPosition.rotation;
             
-            if(numberOfCards == 2){
+            //Check if it's the second card, if it is then place it face down. Else place it faced up
+            if(numberOfCards == 2 && cardSum < 21){
                 Quaternion cardRotation = cardPosition.rotation;
                 cardRotation.eulerAngles = new Vector3(cardRotation.eulerAngles.x, cardRotation.eulerAngles.y, 180);
                 cardGO.transform.rotation = cardRotation;
@@ -81,6 +81,7 @@ public class DealerHand : MonoBehaviour
         }
     }
 
+    //Updates the dealer card sum and number of cards.
     public void UpdateCardSum(int value){
         cardSum = cardSum + value;
         numberOfCards++;

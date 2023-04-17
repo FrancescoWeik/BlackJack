@@ -29,16 +29,6 @@ public class PlayerDecisionState : PlayerState
     {
         base.LogicUpdate();
 
-        /*if(player.numberOfCards<2){
-            if(player.GetCardSum() > player.maxBlackJack){
-                stateMachine.ChangeState(player.loseState);
-            }else{
-                //must ask for card
-                player.decidedWhatToDo = true;
-                stateMachine.ChangeState(player.waitingForCardState);
-            }
-        }*/
-
         //if the playeer score is less than the dealer and the dealer cannot draw anymore, the player has to draw otherwise he will lose for sure.
         if(player.GetCardSum() < player.dealerHand.GetDealerShownCardSum() && (player.dealerHand.GetDealerCardSum()<21 && player.dealerHand.GetDealerShownCardSum()>17)){
             stateMachine.ChangeState(player.waitingForCardState);

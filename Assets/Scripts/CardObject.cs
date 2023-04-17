@@ -33,7 +33,6 @@ public class CardObject : ThrowableObject
 
         meshRenderer = GetComponent<MeshRenderer>();
 
-        //Debug.Log(meshRenderer);
         alreadyInitialized = false;
         deck = transform.parent.gameObject.GetComponent<Deck>(); //reference to deck needed to know how to initialize card
         assigned = false;
@@ -59,7 +58,6 @@ public class CardObject : ThrowableObject
 
     //assign the material to the card
     public void SetMaterial(Material material){
-        //Debug.Log(material);
         this.meshRenderer.material = material;
         alreadyInitialized = true;
     }
