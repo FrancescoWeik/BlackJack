@@ -400,7 +400,7 @@ MonoBehaviour:
   cardObjectList: []
   maxPointsNumber: 17
   cardPosition: {fileID: 30619108836474264}
-  cardXOffset: 0.6
+  cardXOffset: 0.2
   cardSumText: {fileID: 30619108783595129}
 --- !u!1001 &1814888214236354074
 PrefabInstance:

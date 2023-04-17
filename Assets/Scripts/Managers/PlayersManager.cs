@@ -40,7 +40,6 @@ public class PlayersManager : MonoBehaviour
             //assign asking percentage
             Player singlePlayer = singlePlayerGO.GetComponent<Player>();
             singlePlayer.SetPercentage(Random.Range(3,9));
-            //singlePlayer.askingPercentage = Random.Range(3,9);
 
             //assign player names
             int randomPlayerName = Random.Range(0, playerNamesList.Count);
