@@ -136,6 +136,8 @@ public class DealerHand : MonoBehaviour
         Quaternion cardRotation = cardObjectList[1].gameObject.transform.rotation;
         cardRotation.eulerAngles = new Vector3(cardRotation.eulerAngles.x, cardRotation.eulerAngles.y, 0);
         cardObjectList[1].gameObject.transform.rotation = cardRotation;
+        shownCardSum = cardSum; //player can see all the cards of the dealer now, so update the shownCardSum
+
     }
 
     //Check if the dealer lost, before doing so check if he has aces, if he does then check if dealer loses even if the ace value is 1
