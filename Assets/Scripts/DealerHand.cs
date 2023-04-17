@@ -6,17 +6,20 @@ using UnityEngine.UI;
 public class DealerHand : MonoBehaviour
 {
     public List<CardObject> cardObjectList; //list of the cards that the dealer has
+
     private int cardSum; //sum of the cards
     private int shownCardSum; //sum of the cards of the dealer with the exceeption of the second one (the second card dealt is not shown in blackjack)
     private int numberOfAces; //number of aces held by the dealer
     private int numberOfCards; //number of cards held by the dealer
 
-    public int maxPointsNumber; //number after which dealer cannot draw
+    public int maxPointsNumber; //number after which dealer cannot draw, it's 17 in blackjack
 
+    [Header("Card Position")]
     public Transform cardPosition;
     public float cardXOffset;
     private float currentXOffset;
 
+    [Header("UI")]
     public Text cardSumText;
 
     //public bool ShowAllCards; //set by the programmer
@@ -54,6 +57,7 @@ public class DealerHand : MonoBehaviour
                 cardGO.transform.rotation = cardPosition.rotation;
             }
 
+            //update the card offset
             currentXOffset = currentXOffset + cardXOffset;
         }
     }

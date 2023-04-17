@@ -3367,7 +3367,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8607267967119703969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8443, z: 0.655}
+  m_LocalPosition: {x: 0.08, y: 0.8443, z: 0.655}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8140698199589887700}
@@ -3528,18 +3528,19 @@ MonoBehaviour:
     m_Bits: 256
   cardObjectList: []
   numberOfCards: 0
+  dealerHand: {fileID: 0}
+  cardPosition: {fileID: 8607267967119703968}
+  cardXOffset: 3.3
   stopAskingAtPoints: 20
   askingPercentage: 7
   maxBlackJack: 21
-  dealerHand: {fileID: 0}
   askingForCard: 0
   decidedWhatToDo: 0
   receivedCard: 0
   waitingForNextTurn: 0
   lost: 0
   rejectCards: 0
-  cardPosition: {fileID: 8607267967119703968}
-  cardXOffset: 3.3
+  blackjack: 0
   showStats: 0
   cardSumText: {fileID: 8607267966533500234}
   playerNameText: {fileID: 2297313014231341608}

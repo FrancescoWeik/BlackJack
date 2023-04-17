@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4a8910f2f53e44aae2fd6d982ecf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 10
+  forceMultiplier: 9.5
   yOffset: 0.2
   turnSpeed: 8
   whatIsPlayer:

@@ -6,22 +6,24 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public DealerHand dealer;
 
     public bool isPlayerTurn;
 
+    [Header("UI")]
     public GameObject endRoundCanvas;
     public Text winnerText;
     //public GameObject menuScreen;
     public GameObject pauseMenuScreen;
     public GameObject pauseButton;
 
+    [Header("Dealere And Deck")]
     public Deck deck; //need the deck to be able to handle the deck reset at end of game
     public GameObject arrow; //arrow that points at the dealer field
+    public DealerHand dealer;
 
-    public PlayerNumberScriptable playerNumberScriptable;
+    [Header("Scriptable")]
+    public PlayerNumberScriptable playerNumberScriptable; //needed to know the number of player to put in the scene
 
-    // Start is called before the first frame update
     void Start()
     {
         if(Instance!=null){
@@ -50,7 +52,7 @@ public class GameManager : MonoBehaviour
         if(PlayersManager.Instance.CheckAllPlayersLost()){
             EndGame();
         }else{
-             //if dealer cannot draw then go back to player turn.
+             //if dealer cannot draw then go back to player turn, otherwise the game ends
             if(!dealer.CheckCanDraw()){
                 if(PlayersManager.Instance.CheckPlayersCanPlay()){
                     PlayersManager.Instance.StartPlayerTurn();
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
                 //dealer turn
                 Debug.Log("Dealer turn");
 
-                //activate arrow
+                //activate arrow pointing to where dealer should put the cards
                 arrow.SetActive(true);
             }
         }
@@ -87,19 +89,19 @@ public class GameManager : MonoBehaviour
         //Flip the second card of the dealer at the end of the game if it isn't already flipped
         dealer.FlipCard();
 
-        //if a player has a blackjack go to the blackjack function checking for a draw
+        //if a player has a blackjack then check which players won.
         if(PlayersManager.Instance.CheckPlayersBlackJack()){
             int dealerValue = dealer.GetDealerCardSum();
             PlayersManager.Instance.CheckPlayerWin(dealerValue, true);
         }
 
-        //otherwise check if a player lost
+        //otherwise check if all player lost
         else if(PlayersManager.Instance.CheckAllPlayersLost()){
             //Dealer Won
             DealerWon();
 
         }else{
-            //Players won, which ones?
+            //Players won, check which players won
             int dealerValue = dealer.GetDealerCardSum();
             PlayersManager.Instance.CheckPlayerWin(dealerValue, false);
         }
@@ -111,7 +113,10 @@ public class GameManager : MonoBehaviour
         endRoundCanvas.SetActive(true);
     }
 
-    //function handling the case where the players won, it displays the canvas
+    /*
+        function handling the case where the players won, it displays the canvas. 
+        Requires the list of the player who won, a boolean telling the game if it was a draw and a boolean checking for blackjacks
+    */
     public void PlayersWon(List<string> playerList, bool isDraw, bool isBlackJack){
         //Flip the second card of the dealer at the end of the game if it isn't already flipped
         dealer.FlipCard();
@@ -121,7 +126,6 @@ public class GameManager : MonoBehaviour
         if(isBlackJack){
             textWinner = "BLACKJACK! \n";
         }
-
 
        textWinner = textWinner + "Winners:\n";  
 

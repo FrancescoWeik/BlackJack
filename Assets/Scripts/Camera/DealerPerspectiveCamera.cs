@@ -6,6 +6,7 @@ public class DealerPerspectiveCamera : MonoBehaviour
 {
     float horizontalInput;
     float verticalInput;
+    
     public float turnSpeed = 5f;
     public float maxAngleX = 35f;
     public float maxAngleY = 35f;

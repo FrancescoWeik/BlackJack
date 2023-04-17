@@ -5,11 +5,11 @@ using UnityEngine.EventSystems;
 
 public class CardObject : ThrowableObject
 {
-    private int value;
-    private char suitChar;
     private MeshRenderer meshRenderer;
 
-    private bool alreadyInitialized;
+    private int value;
+    private char suitChar;
+
     private Deck deck;
 
     public float turnSpeed = 10f;
@@ -19,11 +19,12 @@ public class CardObject : ThrowableObject
 
     [SerializeField] private CardData cardData; //scriptable object containing some variables
 
+    private bool alreadyInitialized;
     private bool assigned; //track whether or not the card has been assigned
+    private bool inFrontOfCamera = false;
 
     Vector3 onTablePosition; //assigned when card is assigned to player
     Quaternion onTableRotation; //assigned when card is assigned to player
-    private bool inFrontOfCamera = false;
 
 
     // Start is called before the first frame update

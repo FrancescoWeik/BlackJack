@@ -6,6 +6,7 @@ public class PlayersManager : MonoBehaviour
 {
     public static PlayersManager Instance;
 
+    [Header("Players Variables")]
     public int numberOfPlayers;
     public int maxNumberOfPlayers;
 
@@ -19,6 +20,7 @@ public class PlayersManager : MonoBehaviour
 
     public int numberOfPlayersWaitingTurn;
 
+    [Header("UI")]
     [SerializeField] private GameObject playerTurnCanvas;
 
     void Start()
@@ -47,7 +49,6 @@ public class PlayersManager : MonoBehaviour
             //assign player names
             int randomPlayerName = Random.Range(0, playerNamesList.Count);
             singlePlayer.SetName(playerNamesList[randomPlayerName]);
-            //singlePlayer.playerName = playerNamesList[randomPlayerName];
 
             players.Add(singlePlayer);
         }
@@ -55,13 +56,12 @@ public class PlayersManager : MonoBehaviour
 
     //Remove all the existing players from the scene
     public void RemoveExistingPlayers(){
-        Debug.Log(numberOfPlayers);
         for(int i=0; i < numberOfPlayers; i++){
             Destroy(players[i].gameObject);
         }
     }
 
-    //Checks if all the players have finished deciding what to do, since it takes so little I can add a decision timer to make the dealer wait
+    //Checks if all the players have finished deciding what to do.
     public bool CheckAllPlayerFinished(){
         for(int i=0; i<players.Count; i++){
             if(!players[i].decidedWhatToDo){
@@ -74,9 +74,7 @@ public class PlayersManager : MonoBehaviour
     //Reset all players decision when the player turn starts.
     public void ResetPlayersDecisions(){
 
-        //show the user that players are choosing what to do
         //playerTurnCanvas.SetActive(true);
-
         for(int i=0; i<players.Count; i++){
             players[i].ResetPlayerDecision();
         }
@@ -102,7 +100,7 @@ public class PlayersManager : MonoBehaviour
 
     public void StartPlayerTurn(){
         
-        //Check if all player don-t want cards or lost, if all of them don't want cards then end game and checks who win
+        //Check if all player don't want cards or lost, if all of them don't want cards then end game and checks who win
         if(CheckPlayersCanPlay()){
             numberOfPlayersWaitingTurn = 0;
 
@@ -111,11 +109,10 @@ public class PlayersManager : MonoBehaviour
 
         }else{
             GameManager.Instance.StartDealerTurn();
-            //GameManager.Instance.EndGame();
         }
     }
 
-    //if a player still hasn't lost or might still want cards then change to player turn.
+    //if a player still hasn't lost or might still want cards then return true
     public bool CheckPlayersCanPlay(){
         for(int i = 0; i < players.Count; i++){
             if(!players[i].lost && !players[i].rejectCards){
@@ -135,6 +132,7 @@ public class PlayersManager : MonoBehaviour
         return true;
     }
 
+    //Check if a player has a blackjack hand, in which case return true
     public bool CheckPlayersBlackJack(){
         for(int i = 0; i < players.Count; i++){
             if(players[i].blackjack){
@@ -144,10 +142,11 @@ public class PlayersManager : MonoBehaviour
         return false;
     }
 
-    //find the player that has a blackjack at first 2 card hand
+    //find the player that has a blackjack
     public void CheckPlayersBlackJackWinner(int dealerValue){
         List<string> playersBlackJackWin = new List<string>();
         bool draw = false;
+
         //check if player has a blackjack
         for(int i = 0; i < players.Count; i++){
             if(players[i].blackjack){
@@ -168,7 +167,7 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    //Check which players won based on their card value. Receives the dealer card sum value as a parameter.
+    //Check which players won based on their card value. Receives the dealer card sum value and a booleaen telling it there's a blackjack as a parameter.
     public void CheckPlayerWin(int dealerValue, bool isBlackjack){
         if(isBlackjack){
             CheckPlayersBlackJackWinner(dealerValue);
@@ -181,13 +180,16 @@ public class PlayersManager : MonoBehaviour
 
         for(int i = 0; i < players.Count; i++){
             if(players[i].GetCardSum() == dealerValue){
-                //draw
-                players[i].ChangeToWinState();
+                //it's a draw only if there are no other player with a better score
+                if(playersWhoWon.Count==0){
+                    draw = true;
+                }
+                players[i].ChangeToIdleState(); //draw
                 playersWhoWon.Add(players[i].GetName());
-                draw = true;
             }
             else if((players[i].GetCardSum() > dealerValue || dealerValue>21) && !players[i].lost){
                 //player win
+                draw = false;
                 players[i].ChangeToWinState();
                 playersWhoWon.Add(players[i].GetName());
             }

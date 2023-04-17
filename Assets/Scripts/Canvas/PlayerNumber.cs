@@ -19,14 +19,12 @@ public class PlayerNumber : MonoBehaviour
     }
 
     public void StartGame(string sceneName){
-        Debug.Log("Start game");
         playerNumberScriptable.numberOfPlayer = currentValue; 
         LevelManager.Instance.LoadScene(sceneName);
     }
 
     public void IncrementValue(){
         if(currentValue >= maxPlayerNumber){
-            Debug.Log("error too big a number");
             return;
         }
         currentValue ++;
@@ -35,7 +33,6 @@ public class PlayerNumber : MonoBehaviour
 
      public void DecrementValue(){
         if(currentValue <= minPlayerNumber){
-            Debug.Log("error too low a number");
             return;
         }
         currentValue --;

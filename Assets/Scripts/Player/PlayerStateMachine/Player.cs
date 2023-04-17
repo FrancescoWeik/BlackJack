@@ -18,17 +18,23 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsCard;
     private int cardLayerNumber;
 
+    [Header("CardElements")]
     public List<CardObject> cardObjectList; //list of the cards that the player has while playing, maybe I can take a reference only to the value
     public int numberOfCards; //keep the numbher of the card drawn by the player
     private int cardSum;
     private int numberOfAces; //keep track to wheter or not player has aces
+    public DealerHand dealerHand; //variable needed to check the hand of the dealer and compare it to yourself
+    
+    public Transform cardPosition; //used to place the cards on the table
+    public float cardXOffset; //offset for the x position for each card that is given to the player
+    private float currentXOffset; //current offset to apply to the card position
 
+    [Header("NumberValues")]
     public int stopAskingAtPoints = 20; //above 20 points the player won't ask for more cards
     public int askingPercentage = 7; //percentage out of ten, so with 7 is 70%
     public int maxBlackJack = 21;
 
-    public DealerHand dealerHand; //variable needed to check the hand of the dealer and compare it to yourself
-
+    [Header("Booleans")]
     public bool askingForCard;
     public bool decidedWhatToDo;
     public bool receivedCard;
@@ -36,11 +42,6 @@ public class Player : MonoBehaviour
     public bool lost; //keep track if a player lost the game
     public bool rejectCards; //keep track if a player rejects cards
     public bool blackjack; //if player has 21 at first 2 cards hee is guaranteed to win, without a dealer blackjack
-
-    public Transform cardPosition; //used to place the cards on the table
-    public float cardXOffset; //offset for the x position for each card that is given to the player
-    private float currentXOffset; //current offset to apply to the card position
-
     public bool showStats; //variable used to decide whether or not to show stats of the player
 
     #region State variables
@@ -57,7 +58,8 @@ public class Player : MonoBehaviour
     #endregion
 
     #region UI
-
+    
+    [Header("UI")]
     public Text cardSumText;
 
     [SerializeField] private Text playerNameText;
@@ -105,6 +107,7 @@ public class Player : MonoBehaviour
         dealerHand = GameObject.Find("DealerField").GetComponent<DealerHand>();
 
         showStats = false;
+        blackjack = false;
 
         //At the start of the game all the player want a card
         stateMachine.Initialize(waitingForCardState);

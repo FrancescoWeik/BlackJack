@@ -27,6 +27,9 @@ public class Deck : MonoBehaviour
     private void Start(){
         InitializeDeck();
         shuffling = false;
+        
+        numberOfChilds = transform.childCount - 1; //don't consider the simple card, for that reason - 1
+
     }
 
     private void Update(){
@@ -55,10 +58,8 @@ public class Deck : MonoBehaviour
     //randomly shuffle all the cards inside the deck
     public void Shuffle(){
 
-        //if the deck contains no cards you can't shuffle it
+        //if there are no cards in the deck then shuffle the ones that haven't been assigned to players
         if(cards.Count == 0){
-            
-            //if there are no cards in the deck then shuffle the ones that haven't been assigned to players
             PickUpNonAssignedCards();
         }
 
@@ -138,11 +139,9 @@ public class Deck : MonoBehaviour
         if(cards.Count == 0){
             //last card havee been played, remove it too
             childListLength = transform.childCount;
-            Debug.Log("All Cards");
         }else{
             //childCount -1 because the last card has not been played and so it has to stay on the top!
             childListLength = transform.childCount -1;
-            Debug.Log("All Cards minus the top one");
         }
 
         //i = numberOfChilds because the deck has also other children besides the cards, so I have to ignore those.
@@ -182,7 +181,7 @@ public class Deck : MonoBehaviour
                 if(bottomCardValue == 11){
                     bottomCardValue = 1;
                 }
-                
+
                 Card bottomCard = new Card(bottomCardSuit, bottomCardValue, bottomCardMaterial);
                 
                 //insert card at the bottom of the list

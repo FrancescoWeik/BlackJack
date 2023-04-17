@@ -6,23 +6,22 @@ using UnityEngine.EventSystems;
 public class ThrowableObject : MonoBehaviour
 {
     protected Rigidbody rb;
+    protected AudioSource audioSource;
 
     //mouse coordinates
     protected Vector3 mOffset;
     protected float mZCoord;
+    protected Vector3 startMousePosition; //mouse position before throwing
+
 
     Vector3 startPosition; //used to know where to throw the card
     Vector3 lastPosition; //last position before releasing the card
     public float forceMultiplier = 10f;
-    public float yOffset = 0.2f;
+    public float yOffset = 0.2f; //y to apply during the throw
 
     protected bool isInteractable; 
 
-    protected AudioSource audioSource;
-
     protected bool isDragging;
-
-    protected Vector3 startMousePosition;
 
     protected virtual void FixedUpdate(){
         if(isDragging){

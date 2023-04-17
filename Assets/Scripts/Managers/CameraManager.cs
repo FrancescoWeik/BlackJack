@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
-{
+{   
+    [Header("CameraGOParent")]
     public GameObject personPerspectiveCameraGO;
     public GameObject standardCameraGO;
 
+    [Header("Camera")]
     public Camera standardCamera;
     public Camera personPerspectiveCamera;
 
-    public GameObject worldButtonCanvas; //need to reference it because it has to change camera to keep working in both perspectives
-
     private bool isPerspective;
+
+    [Header("UI")]
+    public GameObject worldButtonCanvas; //need to reference it because it has to change camera to keep working in both perspectives
 
     private void Start(){
         isPerspective = false;
