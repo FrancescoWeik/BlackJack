@@ -64,6 +64,13 @@ The main components in the scene are:
 - ***The Cards***:</br> The cards are simple GameObject containing a rigidbody, a collider, an audio source and the CardObject script. They initially have no card image and are initialized when clicked by calling a function from the deck. Cards are always children of the deck.
 
 
+#Sounds
+- "Card Flip" by f4ngy (https://freesound.org/people/f4ngy/sounds/240776/) licensed under CC 4.0
+- "Card Schuffling » Shuffling cards 02.WAV" by VKProduktion (https://freesound.org/people/VKProduktion/sounds/217501/) licensed under CC 0
+- "Clap" by erkanozan (https://freesound.org/people/erkanozan/sounds/51746/) licensed under CC 0
+- "Dealing Card" by f4ngy (https://freesound.org/people/f4ngy/sounds/240777/) licensed under CC 4.0
+
+
 
 
 
