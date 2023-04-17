@@ -9,6 +9,9 @@ public class PlayersManager : MonoBehaviour
     public int numberOfPlayers;
     public int maxNumberOfPlayers;
 
+    public int minDrawPercentage = 3;
+    public int maxDrawPercentage = 9;
+
     public GameObject playerPrefab;
     [SerializeField] private List<string> playerNamesList;
     [SerializeField] private List<Player> players;
@@ -37,9 +40,9 @@ public class PlayersManager : MonoBehaviour
         for(int i = 0; i < numberOfPlayers; i++){
             GameObject singlePlayerGO = Instantiate(playerPrefab, possiblePlayerPositions[i].position, possiblePlayerPositions[i].rotation);
 
-            //assign asking percentage
+            //assign asking for a card percentage
             Player singlePlayer = singlePlayerGO.GetComponent<Player>();
-            singlePlayer.SetPercentage(Random.Range(3,9));
+            singlePlayer.SetPercentage(Random.Range(minDrawPercentage,maxDrawPercentage));
 
             //assign player names
             int randomPlayerName = Random.Range(0, playerNamesList.Count);

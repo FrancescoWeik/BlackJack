@@ -461,7 +461,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Look Aroun: W A S D or ARROWS'
+  m_Text: 'Look Around: W A S D or ARROWS'
 --- !u!222 &84432033
 CanvasRenderer:
   m_ObjectHideFlags: 0
