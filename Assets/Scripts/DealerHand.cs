@@ -11,7 +11,7 @@ public class DealerHand : MonoBehaviour
     private int numberOfAces; //number of aces held by the dealer
     private int numberOfCards; //number of cards held by the dealer
 
-    public int maxPointsNumber;
+    public int maxPointsNumber; //number after which dealer cannot draw
 
     public Transform cardPosition;
     public float cardXOffset;
@@ -75,6 +75,10 @@ public class DealerHand : MonoBehaviour
 
     public bool CheckCanDraw(){
         if(cardSum>=maxPointsNumber){
+            //if dealer only have 2 cards and it's the third turn then flip the second card
+            if(numberOfCards == 2){
+                FlipCard();
+            }
             return false;
         }else{
             return true;

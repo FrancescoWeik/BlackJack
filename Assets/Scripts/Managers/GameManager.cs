@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
         //dealer and player win if draw
         if(isDraw){
-            textWinner =  textWinner + "- Dealer" + "\n";
+            textWinner =  "It's a draw! Winners: \n" + "- Dealer" + "\n";
         }
 
         for(int i = 0; i < playerList.Count; i++){

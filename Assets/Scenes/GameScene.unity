@@ -8708,6 +8708,30 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2136338432}
     - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.data[13]
+      value: Daniel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.data[14]
+      value: Vesper
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.data[15]
+      value: Eva
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.data[16]
+      value: Le Chiffre
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
+      propertyPath: playerNamesList.Array.data[17]
+      value: Felix
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661979358651738529, guid: e26c3954251daac4d818d8e0a2b9ea90, type: 3}
       propertyPath: possiblePlayerPositions.Array.data[0]
       value: 
       objectReference: {fileID: 837644362}
